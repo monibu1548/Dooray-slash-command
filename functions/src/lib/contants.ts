@@ -6,6 +6,6 @@ export enum ServicePath {
 
 // 슬래시 커맨드에서 필요한 end point 2개
 export enum EndPoint {
-  Request = "/",
+  Request = "/request",
   Interaction = "/interaction"
 }
