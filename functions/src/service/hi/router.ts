@@ -1,5 +1,6 @@
 import * as express from "express";
-import { AttachmentButtonActionType, CommandResponse, ResponseType } from "../../interface/commandReponse";
+import { CommandInteraction } from "../../interface/commandInteraction";
+import { AttachmentActionType, AttachmentDropdown, CommandResponse, ResponseType } from "../../interface/commandReponse";
 import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
 
@@ -38,17 +39,49 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
         replaceOriginal: false,
         attachments: [
           {
-            callbackId: 'f',
+            callbackId: 'a',
             title: '버튼 타이틀',
             actions: [
               {
                 name: '이름1',
-                type: AttachmentButtonActionType.Button,
+                type: AttachmentActionType.Button,
                 text: '텍스트1',
-                value: 0
+                value: 1
+              },
+              {
+                name: '이름2',
+                type: AttachmentActionType.Button,
+                text: '텍스트2',
+                value: 2
+              },
+              {
+                name: '이름3',
+                type: AttachmentActionType.Button,
+                text: '텍스트3',
+                value: 3
               },
             ]
-          }
+          },
+          {
+            name: '드롭다운 name',
+            text: '드롭다운 text',
+            type: AttachmentActionType.Dropdown,
+            options: [
+              {
+                text: '메뉴1',
+                value: '1'
+              },
+              {
+                text: '메뉴2',
+                value: '2'
+              },
+              {
+                text: '메뉴1',
+                value: '3'
+              }
+            ]
+
+          } as AttachmentDropdown
         ]
       }
       break;
@@ -68,11 +101,12 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
 
 // 사용자의 상호작용시 호출되는 Router
 router.post(EndPoint.Interaction, async (req: express.Request, res: express.Response) => {
-  const request = req.body as CommandRequest
+  const interaction = req.body as CommandInteraction
 
   res.status(200).json({
-    text: request.text,
-    responseType: ResponseType.InChannel
+    text: interaction.actionValue,
+    responseType: ResponseType.InChannel,
+    replaceOriginal: true
   } as CommandResponse)
 });
 
