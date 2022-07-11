@@ -66,7 +66,6 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
             ]
           },
           {
-            callbackId: 'b',
             name: '드롭다운 name',
             text: '드롭다운 text',
             type: AttachmentActionType.Dropdown,
@@ -97,7 +96,6 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
         replaceOriginal: false,
         attachments: [
           {
-            callbackId: 'b',
             name: '드롭다운 name',
             text: '드롭다운 text',
             type: AttachmentActionType.Dropdown,

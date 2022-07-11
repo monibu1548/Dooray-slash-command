@@ -24,7 +24,7 @@ export interface AttachmentButtonAction {
 export interface AttachmentDropdown {
   name: string,
   text: string,
-  type: AttachmentActionType.Dropdown,
+  type: AttachmentActionType,
   options: Array<AttachmentDropdownOption> | null
 }
 
