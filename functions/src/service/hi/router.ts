@@ -15,6 +15,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
   } as CommandResponse)
 });
 
+// 사용자의 상호작용시 호출되는 Router
 router.post(EndPoint.Interaction, async (req: express.Request, res: express.Response) => {
   const request = req.body as CommandRequest
 
@@ -23,3 +24,5 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
     responseType: ResponseType.InChannel
   } as CommandResponse)
 });
+
+module.exports = router
