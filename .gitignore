@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/yarn,node,intellij,visualstudiocode,macos,firebase
 # Edit at https://www.toptal.com/developers/gitignore?templates=yarn,node,intellij,visualstudiocode,macos,firebase
 
+.service-accounts
+
 ### Firebase ###
 .idea
 **/node_modules/*

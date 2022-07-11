@@ -6,11 +6,8 @@ const app = express();
 
 // Router
 const hiRouter = require('./service/hi/router')
-const remindRouter = require('./service/hi/router')
 
 app.use(ServicePath.Hi, hiRouter);
-app.use(ServicePath.Remind, remindRouter);
-
 
 // Health Check
 app.get("/", async (req: express.Request, res: express.Response) => res.status(200).send("OK"));

@@ -3,11 +3,12 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
-    "serve": "npm run build && firebase emulators:start --only functions",
+    "serve": "tsc -w | firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "kill-port": "npx kill-port 8080 && npx kill-port 4000 && npx kill-port 9000 && npx kill-port 9099 && npx kill-port 8085 && npx kill-port 4400"
   },
   "engines": {
     "node": "12"
