@@ -1,6 +1,6 @@
 import * as express from "express";
 import { CommandInteraction } from "../../interface/commandInteraction";
-import { AttachmentActionType, AttachmentDropdown, CommandResponse, ResponseType } from "../../interface/commandReponse";
+import { AttachmentActionType, CommandResponse, ResponseType } from "../../interface/commandReponse";
 import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
 
@@ -13,7 +13,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
   var response: CommandResponse
 
   switch (request.text) {
-    case 'A':
+    case 'a-menu':
       response = {
         text: "a-menu",
         deleteOriginal: false,
@@ -81,7 +81,37 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
               }
             ]
 
-          } as AttachmentDropdown
+          }
+        ]
+      }
+      break;
+    case 'd-menu':
+      response = {
+        text: "d-menu",
+        deleteOriginal: false,
+        responseType: ResponseType.Ephemeral,
+        replaceOriginal: false,
+        attachments: [
+          {
+            name: '드롭다운 name',
+            text: '드롭다운 text',
+            type: AttachmentActionType.Dropdown,
+            options: [
+              {
+                text: '메뉴1',
+                value: '1'
+              },
+              {
+                text: '메뉴2',
+                value: '2'
+              },
+              {
+                text: '메뉴1',
+                value: '3'
+              }
+            ]
+
+          }
         ]
       }
       break;
