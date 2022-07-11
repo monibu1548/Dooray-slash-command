@@ -18,7 +18,7 @@ export interface AttachmentButtonAction {
   name: string,
   type: AttachmentActionType,
   text: string,
-  value: number
+  value: string
 }
 
 export interface AttachmentDropdown {

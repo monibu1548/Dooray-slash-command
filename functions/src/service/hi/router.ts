@@ -3,12 +3,15 @@ import { CommandInteraction } from "../../interface/commandInteraction";
 import { AttachmentActionType, CommandResponse, ResponseType } from "../../interface/commandReponse";
 import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
+import { stagingLog } from "../../util/logger";
 
 const router = express.Router();
 
 // 슬래시 커맨드 실행 시 호출되는 Router
 router.post(EndPoint.Request, async (req: express.Request, res: express.Response) => {
   const request = req.body as CommandRequest
+
+  stagingLog(request)
 
   var response: CommandResponse
 
@@ -46,23 +49,24 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
                 name: '이름1',
                 type: AttachmentActionType.Button,
                 text: '텍스트1',
-                value: 1
+                value: '1'
               },
               {
                 name: '이름2',
                 type: AttachmentActionType.Button,
                 text: '텍스트2',
-                value: 2
+                value: '2'
               },
               {
                 name: '이름3',
                 type: AttachmentActionType.Button,
                 text: '텍스트3',
-                value: 3
+                value: '3'
               },
             ]
           },
           {
+            callbackId: 'b',
             name: '드롭다운 name',
             text: '드롭다운 text',
             type: AttachmentActionType.Dropdown,
@@ -93,6 +97,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
         replaceOriginal: false,
         attachments: [
           {
+            callbackId: 'b',
             name: '드롭다운 name',
             text: '드롭다운 text',
             type: AttachmentActionType.Dropdown,
@@ -132,6 +137,8 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
 // 사용자의 상호작용시 호출되는 Router
 router.post(EndPoint.Interaction, async (req: express.Request, res: express.Response) => {
   const interaction = req.body as CommandInteraction
+
+  stagingLog(interaction)
 
   res.status(200).json({
     text: interaction.actionValue,
