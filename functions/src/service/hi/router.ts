@@ -11,7 +11,7 @@ const router = express.Router();
 router.post(EndPoint.Request, async (req: express.Request, res: express.Response) => {
   const request = req.body as CommandRequest
 
-  stagingLog(request)
+  stagingLog(JSON.stringify(request))
 
   var response: CommandResponse
 
@@ -66,6 +66,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
             ]
           },
           {
+            callbackId: 'b',
             name: '드롭다운 name',
             text: '드롭다운 text',
             type: AttachmentActionType.Dropdown,
@@ -96,6 +97,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
         replaceOriginal: false,
         attachments: [
           {
+            callbackId: 'b',
             name: '드롭다운 name',
             text: '드롭다운 text',
             type: AttachmentActionType.Dropdown,
@@ -117,6 +119,8 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
           }
         ]
       }
+
+      stagingLog(JSON.stringify(response))
       break;
     default:
       response = {
@@ -136,7 +140,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
 router.post(EndPoint.Interaction, async (req: express.Request, res: express.Response) => {
   const interaction = req.body as CommandInteraction
 
-  stagingLog(interaction)
+  stagingLog(JSON.stringify(interaction))
 
   res.status(200).json({
     text: interaction.actionValue,
