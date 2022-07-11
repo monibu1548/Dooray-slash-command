@@ -29,6 +29,7 @@ export interface AttachmentDropdown {
 }
 
 export interface AttachmentDropdownOption {
+  type: AttachmentActionType,
   text: string,
   value: string
 }

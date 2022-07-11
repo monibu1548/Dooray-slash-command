@@ -66,20 +66,22 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
             ]
           },
           {
-            callbackId: 'b',
             name: '드롭다운 name',
             text: '드롭다운 text',
             type: AttachmentActionType.Dropdown,
             options: [
               {
+                type: AttachmentActionType.Dropdown,
                 text: '메뉴1',
                 value: '1'
               },
               {
+                type: AttachmentActionType.Dropdown,
                 text: '메뉴2',
                 value: '2'
               },
               {
+                type: AttachmentActionType.Dropdown,
                 text: '메뉴1',
                 value: '3'
               }
@@ -89,28 +91,30 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
         ]
       }
       break;
-    case 'd-menu':
+    case 'e-menu':
       response = {
-        text: "d-menu",
+        text: "e-menu",
         deleteOriginal: false,
         responseType: ResponseType.Ephemeral,
         replaceOriginal: false,
         attachments: [
           {
-            callbackId: 'b',
             name: '드롭다운 name',
             text: '드롭다운 text',
             type: AttachmentActionType.Dropdown,
             options: [
               {
+                type: AttachmentActionType.Dropdown,
                 text: '메뉴1',
                 value: '1'
               },
               {
+                type: AttachmentActionType.Dropdown,
                 text: '메뉴2',
                 value: '2'
               },
               {
+                type: AttachmentActionType.Dropdown,
                 text: '메뉴1',
                 value: '3'
               }
@@ -119,8 +123,6 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
           }
         ]
       }
-
-      stagingLog(JSON.stringify(response))
       break;
     default:
       response = {
