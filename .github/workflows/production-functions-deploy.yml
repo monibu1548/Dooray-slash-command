@@ -22,7 +22,7 @@ jobs:
           include: functions/src/lib/environment.ts
           regex: false
       - name: Firebase Service Account Setting step - 1
-        run: echo ‘${{ secrets.FIREBASE_SERVICE_ACCOUNT }}’ > $HOME/gcloud.json
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > $HOME/gcloud.json
       - name: Firebase Service Account Setting step - 2
         run: export GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud.json
       - name: Deploy
