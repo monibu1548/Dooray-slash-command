@@ -1,9 +1,21 @@
 import * as functions from "firebase-functions";
+import * as express from "express";
+import { ServicePath } from "./lib/contants";
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+const app = express();
+
+// Router
+const hiRouter = require('./service/hi/router')
+const remindRouter = require('./service/hi/router')
+
+app.use(ServicePath.Hi, hiRouter);
+app.use(ServicePath.Remind, remindRouter);
+
+
+// Health Check
+app.get("/", async (req: express.Request, res: express.Response) => res.status(200).send("OK"));
+
+exports.api = functions
+  .region("asia-northeast3")
+  .https
+  .onRequest(app);
