@@ -1,6 +1,6 @@
 import * as express from "express";
 import { CommandInteraction } from "../../interface/commandInteraction";
-import { AttachmentActionType, CommandResponse, ResponseType } from "../../interface/commandReponse";
+import { AttachmentActionType, AttachmentDropdownAction, CommandResponse, ResponseType } from "../../interface/commandReponse";
 import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
 import { stagingLog } from "../../util/logger";
@@ -64,29 +64,6 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
                 value: '3'
               },
             ]
-          },
-          {
-            name: '드롭다운 name',
-            text: '드롭다운 text',
-            type: AttachmentActionType.Dropdown,
-            options: [
-              {
-                type: AttachmentActionType.Dropdown,
-                text: '메뉴1',
-                value: '1'
-              },
-              {
-                type: AttachmentActionType.Dropdown,
-                text: '메뉴2',
-                value: '2'
-              },
-              {
-                type: AttachmentActionType.Dropdown,
-                text: '메뉴1',
-                value: '3'
-              }
-            ]
-
           }
         ]
       }
@@ -99,27 +76,27 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
         replaceOriginal: false,
         attachments: [
           {
-            name: '드롭다운 name',
-            text: '드롭다운 text',
-            type: AttachmentActionType.Dropdown,
-            options: [
+            actions: [
               {
+                name: 'name',
                 type: AttachmentActionType.Dropdown,
-                text: '메뉴1',
-                value: '1'
-              },
-              {
-                type: AttachmentActionType.Dropdown,
-                text: '메뉴2',
-                value: '2'
-              },
-              {
-                type: AttachmentActionType.Dropdown,
-                text: '메뉴1',
-                value: '3'
-              }
+                text: 'text',
+                options: [
+                  {
+                    text: '1',
+                    value: '1'
+                  },
+                  {
+                    text: '2',
+                    value: '2'
+                  },
+                  {
+                    text: '3',
+                    value: '3'
+                  }
+                ]
+              } as AttachmentDropdownAction
             ]
-
           }
         ]
       }

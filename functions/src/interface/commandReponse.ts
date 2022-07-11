@@ -22,10 +22,14 @@ export interface AttachmentButtonAction {
 }
 
 export interface AttachmentDropdown {
+  actions: Array<AttachmentDropdownAction>
+}
+
+export interface AttachmentDropdownAction {
   name: string,
   text: string,
   type: AttachmentActionType,
-  options: Array<AttachmentDropdownOption> | null
+  options: Array<AttachmentDropdownOption>
 }
 
 export interface AttachmentDropdownOption {

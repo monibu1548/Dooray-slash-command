@@ -1,3 +1,5 @@
+import { CommandResponse } from "./commandReponse"
+
 export interface InteractionTenant {
   id: string,
   domain: string
@@ -26,5 +28,6 @@ export interface CommandInteraction {
   cmdToken: string,
   triggerId: string,
   commandRequestUrl: string,
-  channelLogId: string
+  channelLogId: string,
+  originalMessage: CommandResponse | null
 }
