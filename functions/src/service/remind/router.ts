@@ -376,6 +376,8 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
 
 
 const periodicAttachment = (message: CommandResponse) => {
+  stagingLog('periodicAttachment: ' + JSON.stringify(message.attachments))
+
   return (message.attachments ?? [])
     .filter((attachment) => {
       return isField(attachment)
@@ -389,6 +391,8 @@ const periodicAttachment = (message: CommandResponse) => {
 
 const updatePeriodicAttachment = (message: CommandResponse, week: string | null, morning: string | null, hour: string | null, min: string | null) => {
   var attachment = periodicAttachment(message)
+
+  stagingLog('updatePeriodicAttachment periodicAttachment: ' + JSON.stringify(attachment))
 
   var val = attachment.value.split('"')
   var settedWeek = val[1]
