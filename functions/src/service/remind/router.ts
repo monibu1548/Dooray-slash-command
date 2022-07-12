@@ -35,7 +35,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
             name: 'repeat',
             type: AttachmentActionType.Button,
             text: '주기적',
-            value: 'repeat',
+            value: 'periodic',
             style: AttachmentButtonStyle.default
           }
         ]
@@ -277,14 +277,14 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
             {
               name: 'confirm',
               type: AttachmentActionType.Button,
-              text: 'Confirm',
+              text: '생성',
               value: 'confirm',
               style: AttachmentButtonStyle.Primary
             },
             {
               name: 'confirm',
               type: AttachmentActionType.Button,
-              text: 'Cancel',
+              text: '취소',
               value: 'cancel',
               style: AttachmentButtonStyle.default
             },
