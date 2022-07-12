@@ -1,6 +1,6 @@
 import * as express from "express";
 import { CommandInteraction } from "../../interface/commandInteraction";
-import { AttachmentActionType, AttachmentButtonStyle, CommandResponse, ResponseType } from "../../interface/commandReponse";
+import { AttachmentActionType, AttachmentButtonStyle, AttachmentField, CommandResponse, isField, ResponseType } from "../../interface/commandReponse";
 import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
 import { stagingLog } from "../../util/logger";
@@ -118,13 +118,13 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
               value: '60min',
               style: AttachmentButtonStyle.default
             },
-            {
-              name: 'once',
-              type: AttachmentActionType.Button,
-              text: '직접 설정',
-              value: 'manual',
-              style: AttachmentButtonStyle.default
-            }
+            // { 아직 미지원
+            //   name: 'once',
+            //   type: AttachmentActionType.Button,
+            //   text: '직접 설정',
+            //   value: 'manual',
+            //   style: AttachmentButtonStyle.default
+            // }
           ]
         }
       ]
@@ -271,6 +271,14 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
           ]
         },
         {
+          title: '주기',
+          value: '매주 "월화수목금" 마다 "오전" "12"시 "00"분'
+        },
+        {
+          title: '메시지 내용',
+          value: message.text
+        },
+        {
           callbackId: generateUUID(),
           title: '확인',
           actions: [
@@ -315,6 +323,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
       case '60min':
         break;
       case 'manual':
+        // 미지원
         break;
     }
   }
@@ -323,30 +332,95 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
 
   // 1-2. 정기적 예약 (요일 클릭 시)
   if (interaction.actionName == 'periodic') {
-    stagingLog('action name: periodic')
+    updatePeriodicAttachment(message, interaction.actionValue, null, null, null)
+
+    stagingLog('updatePeriodicAttachment week: ' + JSON.stringify(message))
+  }
+
+  // 1-2. 정기적 예약 (오전오후 클릭 시)
+  if (interaction.actionName == 'AM/PM') {
+    updatePeriodicAttachment(message, null, interaction.actionValue, null, null)
+
+    stagingLog('updatePeriodicAttachment morning: ' + JSON.stringify(message))
+  }
+
+  // 1-2. 정기적 예약 (시간 클릭 시)
+  if (interaction.actionName == 'hour') {
+    updatePeriodicAttachment(message, null, null, interaction.actionValue, null)
+
+    stagingLog('updatePeriodicAttachment hour: ' + JSON.stringify(message))
+  }
+
+  // 1-2. 정기적 예약 (분 클릭 시)
+  if (interaction.actionName == 'min') {
+    updatePeriodicAttachment(message, null, null, null, interaction.actionValue)
+
+    stagingLog('updatePeriodicAttachment min: ' + JSON.stringify(message))
+  }
+
+  // 2. 확인
+  if (interaction.actionName == 'confirm') {
+    stagingLog('action name: confirm')
 
     switch (interaction.actionValue) {
-      // DB 에 Work Queue 생성
-      // 클릭 시 누적
-      case 'mon':
+      // DB 적재 및 Flow 종료
+      case 'confirm':
         break;
-      case 'tue':
-        break;
-      case 'wed':
-        break;
-      case 'thu':
-        break;
-      case 'fri':
-        break;
-      case 'sat':
-        break;
-      case 'sun':
+      case 'cancel':
         break;
     }
   }
 
-
   res.status(200).json(message)
 });
+
+
+const periodicAttachment = (message: CommandResponse) => {
+  return (message.attachments ?? [])
+    .filter((attachment) => {
+      return isField(attachment)
+    })
+    .filter((field) => {
+      const casted = field as AttachmentField
+      return casted.title === '주기'
+    })[0] as AttachmentField
+}
+
+
+const updatePeriodicAttachment = (message: CommandResponse, week: string | null, morning: string | null, hour: string | null, min: string | null) => {
+  var attachment = periodicAttachment(message)
+
+  var val = attachment.value.split('"')
+  var settedWeek = val[1]
+  var settedMorning = val[3]
+  var settedHour = val[5]
+  var settedMin = val[7]
+
+  if (week !== null) {
+    if (week === settedWeek) {
+      // 현재 설정된 요일 === 클릭된 요일인 경우, 모든 요일이 선택 해제되기 때문에 아무 행동도 하지 않음. 
+    } else {
+      if (settedWeek.indexOf(week)) {
+        settedWeek = settedWeek + week
+      } else {
+        settedWeek = settedWeek.replace(week, '')
+      }
+    }
+  }
+
+  if (morning !== null) {
+    settedMorning = morning
+  }
+
+  if (hour !== null) {
+    settedHour = hour
+  }
+
+  if (min !== null) {
+    settedMin = min
+  }
+
+  attachment.value = `매주 "${settedWeek}" 마다 "${settedMorning}" "${settedHour}"시 "${settedMin}"분`
+}
 
 module.exports = router
