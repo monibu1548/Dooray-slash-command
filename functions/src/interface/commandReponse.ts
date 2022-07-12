@@ -18,7 +18,14 @@ export interface AttachmentButtonAction {
   name: string,
   type: AttachmentActionType,
   text: string,
-  value: string
+  value: string,
+  style: AttachmentButtonStyle
+}
+
+export enum AttachmentButtonStyle {
+  Primary = 'primary',
+  Danger = 'danger',
+  default = 'default'
 }
 
 export interface AttachmentDropdown {

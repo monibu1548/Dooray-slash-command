@@ -29,5 +29,5 @@ export interface CommandInteraction {
   triggerId: string,
   commandRequestUrl: string,
   channelLogId: string,
-  originalMessage: CommandResponse | null
+  originalMessage: CommandResponse
 }

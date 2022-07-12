@@ -1,6 +1,6 @@
 import * as express from "express";
 import { CommandInteraction } from "../../interface/commandInteraction";
-import { AttachmentActionType, AttachmentDropdownAction, CommandResponse, ResponseType } from "../../interface/commandReponse";
+import { AttachmentActionType, AttachmentButtonStyle, AttachmentDropdownAction, CommandResponse, ResponseType } from "../../interface/commandReponse";
 import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
 import { stagingLog } from "../../util/logger";
@@ -49,19 +49,22 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
                 name: '이름1',
                 type: AttachmentActionType.Button,
                 text: '텍스트1',
-                value: '1'
+                value: '1',
+                style: AttachmentButtonStyle.default
               },
               {
                 name: '이름2',
                 type: AttachmentActionType.Button,
                 text: '텍스트2',
-                value: '2'
+                value: '2',
+                style: AttachmentButtonStyle.default
               },
               {
                 name: '이름3',
                 type: AttachmentActionType.Button,
                 text: '텍스트3',
-                value: '3'
+                value: '3',
+                style: AttachmentButtonStyle.default
               },
             ]
           }
