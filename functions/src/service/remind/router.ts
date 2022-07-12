@@ -56,6 +56,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
   stagingLog(JSON.stringify(interaction))
 
   var message = interaction.originalMessage
+  message.replaceOriginal = true
 
   // 1. 반복 설정
   if (interaction.actionName == 'repeat') {
@@ -72,8 +73,8 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
               name: 'once',
               type: AttachmentActionType.Button,
               text: '1분 후',
-              value: '1min',
-              style: AttachmentButtonStyle.Primary
+              value: 'c',
+              style: AttachmentButtonStyle.default
             },
             {
               name: 'once',
@@ -138,7 +139,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
               type: AttachmentActionType.Button,
               text: '월',
               value: 'mon',
-              style: AttachmentButtonStyle.Primary
+              style: AttachmentButtonStyle.default
             },
             {
               name: 'periodic',
@@ -183,7 +184,112 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
               style: AttachmentButtonStyle.default
             }
           ]
-        }
+        },
+        {
+          actions: [
+            {
+              name: 'AM/PM',
+              text: 'AM/PM',
+              type: AttachmentActionType.Dropdown,
+              options: [
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '오전',
+                  value: 'morning'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '오후',
+                  value: 'afternoon'
+                }
+              ]
+            },
+            {
+              name: 'hour',
+              text: 'hour',
+              type: AttachmentActionType.Dropdown,
+              options: [
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '12시',
+                  value: '12h'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '1시',
+                  value: '1h'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '2시',
+                  value: '2h'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '3시',
+                  value: '3h'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '4시',
+                  value: '4h'
+                },
+              ]
+            },
+            {
+              name: 'min',
+              text: 'min',
+              type: AttachmentActionType.Dropdown,
+              options: [
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '00',
+                  value: '00m'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '05',
+                  value: '05m'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '10',
+                  value: '10m'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '15',
+                  value: '15m'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '20',
+                  value: '20m'
+                },
+              ]
+            }
+          ]
+        },
+        {
+          callbackId: generateUUID(),
+          title: '확인',
+          actions: [
+            {
+              name: 'confirm',
+              type: AttachmentActionType.Button,
+              text: 'Confirm',
+              value: 'confirm',
+              style: AttachmentButtonStyle.Primary
+            },
+            {
+              name: 'confirm',
+              type: AttachmentActionType.Button,
+              text: 'Cancel',
+              value: 'cancel',
+              style: AttachmentButtonStyle.default
+            },
+          ]
+        },
       ]
     }
   }
@@ -191,13 +297,52 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
   // 1-1.한번 예약
   if (interaction.actionName == 'once') {
     stagingLog('action name: once')
+
+    switch (interaction.actionValue) {
+      // DB 에 Work Queue 생성
+      case '1min':
+        break;
+      case '3min':
+        break;
+      case '5min':
+        break;
+      case '10min':
+        break;
+      case '15min':
+        break;
+      case '30min':
+        break;
+      case '60min':
+        break;
+      case 'manual':
+        break;
+    }
   }
 
 
 
-  // 1-2. 정기적 예약
+  // 1-2. 정기적 예약 (요일 클릭 시)
   if (interaction.actionName == 'periodic') {
     stagingLog('action name: periodic')
+
+    switch (interaction.actionValue) {
+      // DB 에 Work Queue 생성
+      // 클릭 시 누적
+      case 'mon':
+        break;
+      case 'tue':
+        break;
+      case 'wed':
+        break;
+      case 'thu':
+        break;
+      case 'fri':
+        break;
+      case 'sat':
+        break;
+      case 'sun':
+        break;
+    }
   }
 
 
