@@ -41,6 +41,8 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
 
   } as CommandResponse
 
+  stagingLog(JSON.stringify(response))
+
   res.status(200).json(response)
 });
 
