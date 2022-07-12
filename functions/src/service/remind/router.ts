@@ -17,7 +17,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
     responseType: ResponseType.Ephemeral,
     replaceOriginal: false,
     deleteOriginal: false,
-    text: '',
+    text: '리마인드 설정',
     attachments: [
       {
         callbackId: '1233',
