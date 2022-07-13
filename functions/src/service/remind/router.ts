@@ -73,7 +73,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
               name: 'once',
               type: AttachmentActionType.Button,
               text: '1분 후',
-              value: 'c',
+              value: '1min',
               style: AttachmentButtonStyle.default
             },
             {
@@ -411,30 +411,70 @@ const updatePeriodicAttachment = (message: CommandResponse, week: string | null,
   var settedMin = val[7]
 
   if (week !== null) {
+    var weekValue = weekToKo(week)
     if (week === settedWeek) {
       // 현재 설정된 요일 === 클릭된 요일인 경우, 모든 요일이 선택 해제되기 때문에 아무 행동도 하지 않음. 
     } else {
-      if (settedWeek.indexOf(week)) {
-        settedWeek = settedWeek + week
+      if (settedWeek.indexOf(weekValue)) {
+        settedWeek = settedWeek + weekValue
       } else {
-        settedWeek = settedWeek.replace(week, '')
+        settedWeek = settedWeek.replace(weekValue, '')
       }
     }
   }
 
   if (morning !== null) {
-    settedMorning = morning
+    settedMorning = morningToKo(morning) || ''
   }
 
   if (hour !== null) {
-    settedHour = hour
+    settedHour = hourToKo(hour)
   }
 
   if (min !== null) {
-    settedMin = min
+    settedMin = minToKo(min)
   }
 
   attachment.value = `매주 "${settedWeek}" 마다 "${settedMorning}" "${settedHour}"시 "${settedMin}"분`
+}
+
+const weekToKo = (week: string) => {
+  switch (week) {
+    case 'mon':
+      return '월'
+    case 'tue':
+      return '화'
+    case 'wed':
+      return '수'
+    case 'thu':
+      return '목'
+    case 'fri':
+      return '금'
+    case 'sat':
+      return '토'
+    case 'sun':
+      return '일'
+    default:
+      return ''
+  }
+}
+
+const hourToKo = (hour: string) => {
+  return hour.replace('h', '')
+}
+
+const minToKo = (hour: string) => {
+  return hour.replace('m', '')
+}
+
+const morningToKo = (morning: string) => {
+  switch (morning) {
+    case 'monring':
+      return '오전'
+    case 'afternoon':
+      return '오후'
+  }
+  return ''
 }
 
 module.exports = router
