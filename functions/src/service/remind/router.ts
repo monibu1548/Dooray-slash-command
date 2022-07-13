@@ -415,11 +415,13 @@ const updatePeriodicAttachment = (message: CommandResponse, week: string | null,
     if (week === settedWeek) {
       // 현재 설정된 요일 === 클릭된 요일인 경우, 모든 요일이 선택 해제되기 때문에 아무 행동도 하지 않음. 
     } else {
-      if (settedWeek.indexOf(weekValue)) {
+      if (settedWeek.indexOf(weekValue) > 0) {
         settedWeek = settedWeek.replace(weekValue, '')
       } else {
         settedWeek = settedWeek + weekValue
       }
+
+      settedWeek = sortWeek(settedWeek)
     }
   }
 
@@ -475,6 +477,32 @@ const morningToKo = (morning: string) => {
       return '오후'
   }
   return ''
+}
+
+const sortWeek = (weeks: string) => {
+  return weeks.split('').sort((lhs, rhs) => {
+    return weekWeight(lhs) - weekWeight(rhs)
+  }).join('')
+}
+
+const weekWeight = (week: string) => {
+  switch (week) {
+    case '월':
+      return 1
+    case '화':
+      return 2
+    case '수':
+      return 3
+    case '목':
+      return 4
+    case '금':
+      return 5
+    case '토':
+      return 6
+    case '일':
+      return 7
+  }
+  return 0
 }
 
 module.exports = router
