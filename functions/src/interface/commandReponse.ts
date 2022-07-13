@@ -45,6 +45,10 @@ export interface AttachmentDropdownOption {
   value: string
 }
 
+export interface AttachmentFields {
+  fields: Array<AttachmentField>
+}
+
 export interface AttachmentField {
   title: string,
   value: string
@@ -55,17 +59,17 @@ export interface CommandResponse {
   responseType: ResponseType, // Ephemeral (나에게만 보이는 메시지), InChannel (채널에 공유되는 메시지)
   replaceOriginal: boolean, // 기존에 보낸 메시지를 업데이트 (알림 X)
   deleteOriginal: boolean, // 기존 메시지를 삭제하고 새로 전송 (알림 O)
-  attachments: Array<AttachmentButtons | AttachmentDropdown | AttachmentField> | null
+  attachments: Array<AttachmentButtons | AttachmentDropdown | AttachmentFields> | null
 }
 
-export function isField(attachment: AttachmentButtons | AttachmentDropdown | AttachmentField): attachment is AttachmentField {
-  return (<AttachmentField>attachment).title !== undefined;
+export function isField(attachment: AttachmentButtons | AttachmentDropdown | AttachmentFields): attachment is AttachmentFields {
+  return (<AttachmentFields>attachment).fields !== undefined;
 }
 
-export function isButton(attachment: AttachmentButtons | AttachmentDropdown | AttachmentField): attachment is AttachmentButtons {
+export function isButton(attachment: AttachmentButtons | AttachmentDropdown | AttachmentFields): attachment is AttachmentButtons {
   return (<AttachmentButtons>attachment).callbackId !== undefined;
 }
 
-export function isDropdown(attachment: AttachmentButtons | AttachmentDropdown | AttachmentField): attachment is AttachmentDropdown {
+export function isDropdown(attachment: AttachmentButtons | AttachmentDropdown | AttachmentFields): attachment is AttachmentDropdown {
   return (<AttachmentDropdown>attachment).actions !== undefined;
 }

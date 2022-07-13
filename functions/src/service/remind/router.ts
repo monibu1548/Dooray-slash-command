@@ -1,6 +1,6 @@
 import * as express from "express";
 import { CommandInteraction } from "../../interface/commandInteraction";
-import { AttachmentActionType, AttachmentButtonStyle, AttachmentField, CommandResponse, isField, ResponseType } from "../../interface/commandReponse";
+import { AttachmentActionType, AttachmentButtonStyle, AttachmentFields, CommandResponse, isField, ResponseType } from "../../interface/commandReponse";
 import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
 import { stagingLog } from "../../util/logger";
@@ -271,12 +271,20 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
           ]
         },
         {
-          title: '주기',
-          value: '매주 "월화수목금" 마다 "오전" "12"시 "00"분'
+          fields: [
+            {
+              title: '주기',
+              value: '매주 "월화수목금" 마다 "오전" "12"시 "00"분'
+            }
+          ]
         },
         {
-          title: '메시지 내용',
-          value: message.text
+          fields: [
+            {
+              title: '메시지 내용',
+              value: message.text
+            }
+          ]
         },
         {
           callbackId: generateUUID(),
@@ -378,14 +386,16 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
 const periodicAttachment = (message: CommandResponse) => {
   stagingLog('periodicAttachment: ' + JSON.stringify(message.attachments))
 
-  return (message.attachments ?? [])
+  const fields = (message.attachments ?? [])
     .filter((attachment) => {
       return isField(attachment)
     })
     .filter((field) => {
-      const casted = field as AttachmentField
-      return casted.title === '주기'
-    })[0] as AttachmentField
+      const casted = field as AttachmentFields
+      return casted.fields[0].title === '주기'
+    })[0] as AttachmentFields
+
+  return fields.fields[0]
 }
 
 
