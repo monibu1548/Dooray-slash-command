@@ -234,6 +234,41 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
                   text: '4시',
                   value: '4h'
                 },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '5시',
+                  value: '5h'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '6시',
+                  value: '6h'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '7시',
+                  value: '7h'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '8시',
+                  value: '8h'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '9시',
+                  value: '9h'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '10시',
+                  value: '10h'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '11시',
+                  value: '11h'
+                },
               ]
             },
             {
@@ -265,6 +300,41 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
                   type: AttachmentActionType.Dropdown,
                   text: '20',
                   value: '20m'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '25',
+                  value: '25m'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '30',
+                  value: '30m'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '35',
+                  value: '35m'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '40',
+                  value: '40m'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '45',
+                  value: '45m'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '50',
+                  value: '50m'
+                },
+                {
+                  type: AttachmentActionType.Dropdown,
+                  text: '55',
+                  value: '55m'
                 },
               ]
             }
@@ -415,7 +485,7 @@ const updatePeriodicAttachment = (message: CommandResponse, week: string | null,
     if (week === settedWeek) {
       // 현재 설정된 요일 === 클릭된 요일인 경우, 모든 요일이 선택 해제되기 때문에 아무 행동도 하지 않음. 
     } else {
-      if (settedWeek.indexOf(weekValue) > 0) {
+      if (settedWeek.indexOf(weekValue) > -1) {
         settedWeek = settedWeek.replace(weekValue, '')
       } else {
         settedWeek = settedWeek + weekValue
@@ -471,7 +541,7 @@ const minToKo = (hour: string) => {
 
 const morningToKo = (morning: string) => {
   switch (morning) {
-    case 'monring':
+    case 'morning':
       return '오전'
     case 'afternoon':
       return '오후'
