@@ -18,7 +18,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
     responseType: ResponseType.Ephemeral,
     replaceOriginal: false,
     deleteOriginal: false,
-    text: '리마인드 설정',
+    text: request.text,
     attachments: [
       {
         callbackId: generateUUID(),
@@ -416,9 +416,9 @@ const updatePeriodicAttachment = (message: CommandResponse, week: string | null,
       // 현재 설정된 요일 === 클릭된 요일인 경우, 모든 요일이 선택 해제되기 때문에 아무 행동도 하지 않음. 
     } else {
       if (settedWeek.indexOf(weekValue)) {
-        settedWeek = settedWeek + weekValue
-      } else {
         settedWeek = settedWeek.replace(weekValue, '')
+      } else {
+        settedWeek = settedWeek + weekValue
       }
     }
   }
