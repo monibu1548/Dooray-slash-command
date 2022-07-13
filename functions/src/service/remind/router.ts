@@ -441,10 +441,14 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
     stagingLog('action name: confirm')
 
     switch (interaction.actionValue) {
-      // DB 적재 및 Flow 종료
       case 'confirm':
+        message.attachments = []
+        // DB 적재 및 Flow 종료
+        message.text = '등록했습니다'
         break;
       case 'cancel':
+        message.attachments = []
+        message.text = '취소했습니다'
         break;
     }
   }
@@ -482,7 +486,7 @@ const updatePeriodicAttachment = (message: CommandResponse, week: string | null,
 
   if (week !== null) {
     var weekValue = weekToKo(week)
-    if (week === settedWeek) {
+    if (weekValue === settedWeek) {
       // 현재 설정된 요일 === 클릭된 요일인 경우, 모든 요일이 선택 해제되기 때문에 아무 행동도 하지 않음. 
     } else {
       if (settedWeek.indexOf(weekValue) > -1) {
