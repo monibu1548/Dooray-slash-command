@@ -5,6 +5,7 @@ import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
 import { stagingLog } from "../../util/logger";
 import { generateUUID } from "../../util/utils";
+import { registerOnceTask } from "./service";
 
 const router = express.Router();
 
@@ -358,7 +359,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
         },
         {
           callbackId: generateUUID(),
-          title: '확인',
+          title: '리마인드',
           actions: [
             {
               name: 'confirm',
@@ -387,23 +388,33 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
     switch (interaction.actionValue) {
       // DB 에 Work Queue 생성
       case '1min':
+        await registerOnceTask(interaction, '1')
         break;
       case '3min':
+        await registerOnceTask(interaction, '3')
         break;
       case '5min':
+        await registerOnceTask(interaction, '5')
         break;
       case '10min':
+        await registerOnceTask(interaction, '10')
         break;
       case '15min':
+        await registerOnceTask(interaction, '15')
         break;
       case '30min':
+        await registerOnceTask(interaction, '30')
         break;
       case '60min':
+        await registerOnceTask(interaction, '60')
         break;
       case 'manual':
         // 미지원
         break;
     }
+
+    message.attachments = []
+    message.text = '등록했습니다'
   }
 
 
