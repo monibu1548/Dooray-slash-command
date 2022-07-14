@@ -72,7 +72,7 @@ export const registerPeriodicTask = async (request: CommandInteraction, schedule
 
   const taskID = await firebaseFirestore
     .collection('remindTask')
-    .add(task)
+    .add(JSON.parse(JSON.stringify(task)))
     .then((doc) => {
       stagingLog('[ADD PERIODIC TASK] success => ' + JSON.stringify(doc.id))
       return doc.id
@@ -170,7 +170,7 @@ const registerScheduledJob = async (taskId: string, task: RemindTask, timestamp:
 
   const docID = await firebaseFirestore
     .collection('scheduledJob')
-    .add(scheduledJob)
+    .add(JSON.parse(JSON.stringify(scheduledJob)))
     .then((doc) => {
       stagingLog('[REGISTER SCHEDULED JOB] success => ' + JSON.stringify(doc.id))
       return doc.id
