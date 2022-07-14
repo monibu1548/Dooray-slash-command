@@ -27,7 +27,7 @@ export const registerOnceTask = async (request: CommandInteraction, min: string)
 
   const taskID = await firebaseFirestore
     .collection('remindTask')
-    .add(task)
+    .add(JSON.parse(JSON.stringify(task)))
     .then((doc) => {
       stagingLog('[ADD ONCE TASK] success => ' + JSON.stringify(doc.id))
       return doc.id
