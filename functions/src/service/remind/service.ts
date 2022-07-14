@@ -7,6 +7,9 @@ import { CommandInteraction } from "../../interface/commandInteraction";
 
 // 1회성 Task 등록
 export const registerOnceTask = async (request: CommandInteraction, min: string) => {
+  stagingLog('[registerOnceTask] request => ' + JSON.stringify(request))
+  stagingLog('[registerOnceTask] min => ' + min)
+
   const task = new RemindTask(
     '',
     '',
@@ -20,6 +23,8 @@ export const registerOnceTask = async (request: CommandInteraction, min: string)
     request.text
   )
 
+  stagingLog('[registerOnceTask] task => ' + JSON.stringify(task))
+
   const taskID = await firebaseFirestore
     .collection('remindTask')
     .add(task)
@@ -31,6 +36,8 @@ export const registerOnceTask = async (request: CommandInteraction, min: string)
       stagingLog('[ADD ONCE TASK] error => ' + JSON.stringify(err))
       return ''
     })
+
+  stagingLog('[registerOnceTask] taskID => ' + taskID)
 
   const timestamp = new Date().getTime() + (+min * 60 * 1000) // ms 단위
   const jobID = await registerScheduledJob(taskID, task, timestamp)
@@ -246,6 +253,17 @@ export const executeJob = async (job: ScheduledJob) => {
 
   if (job.schedule === null) {
     // task 삭제
+
+    firebaseFirestore
+      .collection('remindTask')
+      .doc(job.taskId)
+      .delete()
+
+    firebaseFirestore
+      .collection('scheduledJob')
+      .doc(job.id)
+      .delete()
+
   } else {
     // 다음 task 등록
   }
