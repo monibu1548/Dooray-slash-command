@@ -32,7 +32,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
             type: AttachmentActionType.Button,
             text: '한번',
             value: 'once',
-            style: AttachmentButtonStyle.Primary
+            style: AttachmentButtonStyle.default
           },
           {
             name: 'repeat',
@@ -40,6 +40,13 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
             text: '주기적',
             value: 'periodic',
             style: AttachmentButtonStyle.default
+          },
+          {
+            name: 'repeat',
+            type: AttachmentActionType.Button,
+            text: '취소',
+            value: 'cancel',
+            style: AttachmentButtonStyle.Danger
           }
         ]
       }
@@ -63,7 +70,6 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
 
   // 1. 반복 설정
   if (interaction.actionName == 'repeat') {
-    stagingLog('action name: repeat')
     message.attachments = []
 
     if (interaction.actionValue == 'once') {
@@ -380,6 +386,9 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
           ]
         },
       ]
+    } else if (interaction.actionValue == 'cancel') {
+      message.attachments = []
+      message.text = '취소했습니다'
     }
   }
 

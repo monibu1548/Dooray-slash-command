@@ -247,7 +247,6 @@ const runToList = async () => {
   return jobList
 }
 
-
 // Job 실행
 const executeJob = async (job: ScheduledJob) => {
   const url = `https://${job.tenantDomain}/messenger/api/commands/hook/${job.cmdToken}`
@@ -255,17 +254,8 @@ const executeJob = async (job: ScheduledJob) => {
   const response = {
     channelId: job.channelId,
     responseType: ResponseType.InChannel,
-    text: `${getUserMention(job.userId, job.tenantId)}님의 리마인더`,
-    attachments: [
-      {
-        fields: [
-          {
-            title: job.text,
-            value: ''
-          }
-        ]
-      }
-    ],
+    text: `${job.text}\n⏰ ${getUserMention(job.userId, job.tenantId)}님의 리마인더 ⏰`,
+    attachments: [],
     replaceOriginal: false,
     deleteOriginal: false
 
