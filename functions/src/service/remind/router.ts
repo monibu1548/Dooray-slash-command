@@ -642,6 +642,7 @@ router.get('/job-list', async (req: express.Request, res: express.Response) => {
     .get()
     .then((snapshot) => {
       if (snapshot.empty) {
+        stagingLog('snapshot is empty...?!')
         return []
       }
 
@@ -652,7 +653,7 @@ router.get('/job-list', async (req: express.Request, res: express.Response) => {
         jobs.push(job)
       }
 
-      return tasks
+      return jobs
     })
   // .catch((err) => {
   //   stagingLog(stagingLog('job list query err: ' + err))
