@@ -595,8 +595,7 @@ const weekWeight = (week: string) => {
 
 // 디버깅, task 목록 조회
 router.get('/task-list', async (req: express.Request, res: express.Response) => {
-
-  firebaseFirestore
+  const list = await firebaseFirestore
     .collection('remindTask')
     .get()
     .then((snapshot) => {
@@ -622,7 +621,7 @@ router.get('/task-list', async (req: express.Request, res: express.Response) => 
     responseType: ResponseType.Ephemeral,
     replaceOriginal: false,
     deleteOriginal: false,
-    text: JSON.stringify(tasks),
+    text: JSON.stringify(list),
     attachments: []
 
   } as CommandResponse
@@ -635,7 +634,9 @@ router.get('/task-list', async (req: express.Request, res: express.Response) => 
 // 디버깅, 실행 타겟 job 목록 조회
 router.get('/job-list', async (req: express.Request, res: express.Response) => {
   const currentTimestamp = `${new Date().getTime()}`
-  firebaseFirestore
+
+  stagingLog(stagingLog('currentTimestamp: ' + JSON.stringify(currentTimestamp)))
+  const list = await firebaseFirestore
     .collection('scheduledJob')
     .where('timestamp', '<=', currentTimestamp)
     .get()
@@ -662,7 +663,7 @@ router.get('/job-list', async (req: express.Request, res: express.Response) => {
     responseType: ResponseType.Ephemeral,
     replaceOriginal: false,
     deleteOriginal: false,
-    text: JSON.stringify(tasks),
+    text: JSON.stringify(list),
     attachments: []
 
   } as CommandResponse
