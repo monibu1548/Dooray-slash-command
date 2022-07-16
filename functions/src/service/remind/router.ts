@@ -1,10 +1,13 @@
 import * as express from "express";
+import { tasks } from "firebase-functions/v1";
 import { CommandInteraction } from "../../interface/commandInteraction";
 import { AttachmentActionType, AttachmentButtonStyle, AttachmentFields, CommandResponse, isField, ResponseType } from "../../interface/commandReponse";
 import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
+import { firebaseFirestore } from "../../lib/firebase";
 import { stagingLog } from "../../util/logger";
 import { generateUUID } from "../../util/utils";
+import { RemindTask, ScheduledJob } from "./entity";
 import { registerOnceTask } from "./service";
 
 const router = express.Router();
@@ -589,5 +592,84 @@ const weekWeight = (week: string) => {
   }
   return 0
 }
+
+// 디버깅, task 목록 조회
+router.get('task-list', async (req: express.Request, res: express.Response) => {
+
+  firebaseFirestore
+    .collection('remindTask')
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        return []
+      }
+
+      var tasks = Array<RemindTask>()
+
+      for (const doc of snapshot.docs) {
+        const task = doc.data() as RemindTask
+        tasks.push(task)
+      }
+
+      return tasks
+    })
+    .catch((err) => {
+      stagingLog(stagingLog('list query err: ' + JSON.stringify(err)))
+      return []
+    })
+
+  var response = {
+    responseType: ResponseType.Ephemeral,
+    replaceOriginal: false,
+    deleteOriginal: false,
+    text: JSON.stringify(tasks),
+    attachments: []
+
+  } as CommandResponse
+
+  stagingLog(JSON.stringify(response))
+
+  res.status(200).json(response)
+});
+
+// 디버깅, 실행 타겟 job 목록 조회
+router.get('job-list', async (req: express.Request, res: express.Response) => {
+  const currentTimestamp = `${new Date().getTime()}`
+  firebaseFirestore
+    .collection('scheduledJob')
+    .where('timestamp', '<=', currentTimestamp)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        return []
+      }
+
+      var jobs = Array<ScheduledJob>()
+
+      for (const doc of snapshot.docs) {
+        const job = doc.data() as ScheduledJob
+        jobs.push(job)
+      }
+
+      return tasks
+    })
+    .catch((err) => {
+      stagingLog(stagingLog('job list query err: ' + JSON.stringify(err)))
+      return []
+    })
+
+  var response = {
+    responseType: ResponseType.Ephemeral,
+    replaceOriginal: false,
+    deleteOriginal: false,
+    text: JSON.stringify(tasks),
+    attachments: []
+
+  } as CommandResponse
+
+  stagingLog(JSON.stringify(response))
+
+  res.status(200).json(response)
+});
 
 module.exports = router
