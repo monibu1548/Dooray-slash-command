@@ -6,8 +6,8 @@ import { EndPoint } from "../../lib/contants";
 import { firebaseFirestore } from "../../lib/firebase";
 import { stagingLog } from "../../util/logger";
 import { generateUUID } from "../../util/utils";
-import { RemindTask, ScheduledJob } from "./entity";
-import { registerOnceTask, run } from "./service";
+import { ScheduledJob } from "./entity";
+import { registeredTaskListInChannel, registerOnceTask, run } from "./service";
 
 const router = express.Router();
 
@@ -16,6 +16,28 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
   const request = req.body as CommandRequest
 
   stagingLog(JSON.stringify(request))
+
+  if (request.text === 'list') {
+    const text = await registeredTaskListInChannel(request.tenantId, request.channelId)
+    var response = {
+      responseType: ResponseType.Ephemeral,
+      replaceOriginal: false,
+      deleteOriginal: false,
+      text: text,
+      attachments: []
+
+    } as CommandResponse
+    res.status(200).json(response)
+    return
+  } else if (request.text.indexOf('remove') > -1) {
+    // remove 명령어 가능성
+    const sliced = request.text.split(' ')
+    if (sliced.length == 2 && sliced[0] === 'remove') {
+
+    } else {
+
+    }
+  }
 
   var response = {
     responseType: ResponseType.Ephemeral,
@@ -46,7 +68,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
             type: AttachmentActionType.Button,
             text: '취소',
             value: 'cancel',
-            style: AttachmentButtonStyle.Danger
+            style: AttachmentButtonStyle.default
           }
         ]
       }
@@ -603,40 +625,19 @@ const weekWeight = (week: string) => {
 
 // 디버깅, task 목록 조회
 router.get('/task-list', async (req: express.Request, res: express.Response) => {
-  const list = await firebaseFirestore
-    .collection('remindTask')
-    .get()
-    .then((snapshot) => {
-      if (snapshot.empty) {
-        return []
-      }
-
-      var tasks = Array<RemindTask>()
-
-      for (const doc of snapshot.docs) {
-        const task = doc.data() as RemindTask
-        tasks.push(task)
-      }
-
-      return tasks
-    })
-    .catch((err) => {
-      stagingLog(stagingLog('list query err: ' + JSON.stringify(err)))
-      return []
-    })
-
+  const tasks = await registeredTaskListInChannel('1387695619080878080', '3209522875565484087')
   var response = {
     responseType: ResponseType.Ephemeral,
     replaceOriginal: false,
     deleteOriginal: false,
-    text: JSON.stringify(list),
+    text: JSON.stringify(tasks),
     attachments: []
 
   } as CommandResponse
 
   stagingLog(JSON.stringify(response))
 
-  res.status(200).json(response)
+  res.status(200).json(tasks)
 });
 
 // 디버깅, 실행 타겟 job 목록 조회

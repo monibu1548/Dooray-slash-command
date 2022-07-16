@@ -291,3 +291,41 @@ const executeJob = async (job: ScheduledJob) => {
 const getUserMention = (userId: string, tenantId: string) => {
   return `(dooray://${tenantId}/members/${userId} "member")`;
 }
+
+// 해당 채널의 task 목록 조회
+export const registeredTaskListInChannel = async (tenantId: string, channelId: string) => {
+  const tasks = await firebaseFirestore
+    .collection('remindTask')
+    .where('tenantId', '==', tenantId)
+    .where('channelId', '==', channelId)
+    .get()
+    .then((shanshot) => {
+      if (shanshot.empty) {
+        return []
+      }
+
+      var tasks = Array<RemindTask>()
+
+      for (const doc of shanshot.docs) {
+        const task = doc.data() as RemindTask
+        tasks.push(task)
+      }
+
+      return tasks
+    })
+    .catch(() => { return [] })
+
+  var text = `현재 채널에 등록된 리마인더 ${tasks.length}개\n`
+
+  for (const task of tasks) {
+    text += `
+        id: ${task.id}
+        text: ${task.text}
+        schedule: ${JSON.stringify(task.schedule)}
+        author: ${getUserMention(task.userId, tenantId)}
+        _________________________________________________
+      `
+  }
+
+  return text
+}
