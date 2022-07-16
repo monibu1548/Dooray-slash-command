@@ -203,9 +203,25 @@ const registerScheduledJob = async (taskId: string, task: RemindTask, timestamp:
   return docID
 }
 
+export const run = async () => {
+  const targetJobs = await runToList()
+
+  var jobs: Promise<any>[] = []
+  for (const job of targetJobs) {
+    jobs.push(executeJob(job))
+  }
+
+  stagingLog(`[RUN] ${jobs.length}개 job을 수행합니다`)
+
+  if (jobs.length > 0) {
+    return await Promise.all(jobs)
+  } else {
+    return await Promise.resolve()
+  }
+}
 
 // 실행시켜야 하는 Job 목록 조회
-export const runToList = async () => {
+const runToList = async () => {
   const currentAtMs = new Date().getTime()
 
   const jobList = await firebaseFirestore
@@ -233,39 +249,55 @@ export const runToList = async () => {
 
 
 // Job 실행
-export const executeJob = async (job: ScheduledJob) => {
+const executeJob = async (job: ScheduledJob) => {
   const url = `https://${job.tenantDomain}/messenger/api/commands/hook/${job.cmdToken}`
 
   const response = {
     channelId: job.channelId,
     responseType: ResponseType.InChannel,
-    text: job.text,
-    attachments: [],
+    text: `${getUserMention(job.userId, job.tenantId)}님의 리마인더`,
+    attachments: [
+      {
+        fields: [
+          {
+            title: job.text,
+            value: ''
+          }
+        ]
+      }
+    ],
     replaceOriginal: false,
     deleteOriginal: false
 
   } as CommandResponse
 
-  const result = await axios.post(url, response)
-
-  stagingLog('[execute job] ' + JSON.stringify(result))
-
+  await axios.post(url, response)
 
   if (job.schedule === null) {
     // task 삭제
-
-    firebaseFirestore
+    const deleteTask = firebaseFirestore
       .collection('remindTask')
       .doc(job.taskId)
       .delete()
+      .then(() => { return true })
+      .catch(() => { return false })
 
-    firebaseFirestore
+    const deleteJob = firebaseFirestore
       .collection('scheduledJob')
       .doc(job.id)
       .delete()
+      .then(() => { return true })
+      .catch(() => { return false })
+
+    return Promise.all([deleteTask, deleteJob])
 
   } else {
     // 다음 task 등록
   }
 
+  return Promise.all([])
+}
+
+const getUserMention = (userId: string, tenantId: string) => {
+  return `(dooray://${tenantId}/members/${userId} "member")`;
 }

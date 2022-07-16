@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import * as express from "express";
 import { ServicePath } from "./lib/contants";
+import { run } from "./service/remind/service";
 
 const app = express();
 
@@ -18,3 +19,12 @@ exports.api = functions
   .region("asia-northeast3")
   .https
   .onRequest(app);
+
+exports.remindTaskRunner = functions
+  .region("asia-northeast3")
+  .runWith({ memory: '2GB' })
+  .pubsub
+  .schedule('* * * * *')
+  .onRun(async context => {
+    return run()
+  })

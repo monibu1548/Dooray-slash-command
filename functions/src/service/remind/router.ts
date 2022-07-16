@@ -1,5 +1,4 @@
 import * as express from "express";
-import { tasks } from "firebase-functions/v1";
 import { CommandInteraction } from "../../interface/commandInteraction";
 import { AttachmentActionType, AttachmentButtonStyle, AttachmentFields, CommandResponse, isField, ResponseType } from "../../interface/commandReponse";
 import { CommandRequest } from "../../interface/commandRequest";
@@ -8,7 +7,7 @@ import { firebaseFirestore } from "../../lib/firebase";
 import { stagingLog } from "../../util/logger";
 import { generateUUID } from "../../util/utils";
 import { RemindTask, ScheduledJob } from "./entity";
-import { registerOnceTask } from "./service";
+import { registerOnceTask, run } from "./service";
 
 const router = express.Router();
 
@@ -653,12 +652,13 @@ router.get('/job-list', async (req: express.Request, res: express.Response) => {
         jobs.push(job)
       }
 
+      stagingLog(jobs.length)
       return jobs
     })
-  // .catch((err) => {
-  //   stagingLog(stagingLog('job list query err: ' + err))
-  //   return []
-  // })
+    .catch((err) => {
+      stagingLog(stagingLog('job list query err: ' + err))
+      return []
+    })
 
   var response = {
     responseType: ResponseType.Ephemeral,
@@ -672,6 +672,11 @@ router.get('/job-list', async (req: express.Request, res: express.Response) => {
   stagingLog(JSON.stringify(response))
 
   res.status(200).json(response)
+});
+
+router.get('/execute', async (req: express.Request, res: express.Response) => {
+  const result = await run()
+  res.status(200).json(result)
 });
 
 module.exports = router
