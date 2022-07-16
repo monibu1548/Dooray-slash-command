@@ -655,7 +655,7 @@ router.get('/job-list', async (req: express.Request, res: express.Response) => {
       return tasks
     })
     .catch((err) => {
-      stagingLog(stagingLog('job list query err: ' + JSON.stringify(err)))
+      stagingLog(stagingLog('job list query err: ' + err))
       return []
     })
 
