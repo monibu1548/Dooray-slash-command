@@ -594,7 +594,7 @@ const weekWeight = (week: string) => {
 }
 
 // 디버깅, task 목록 조회
-router.get('task-list', async (req: express.Request, res: express.Response) => {
+router.get('/task-list', async (req: express.Request, res: express.Response) => {
 
   firebaseFirestore
     .collection('remindTask')
@@ -633,7 +633,7 @@ router.get('task-list', async (req: express.Request, res: express.Response) => {
 });
 
 // 디버깅, 실행 타겟 job 목록 조회
-router.get('job-list', async (req: express.Request, res: express.Response) => {
+router.get('/job-list', async (req: express.Request, res: express.Response) => {
   const currentTimestamp = `${new Date().getTime()}`
   firebaseFirestore
     .collection('scheduledJob')
