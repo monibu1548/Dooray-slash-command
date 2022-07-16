@@ -633,7 +633,7 @@ router.get('/task-list', async (req: express.Request, res: express.Response) => 
 
 // 디버깅, 실행 타겟 job 목록 조회
 router.get('/job-list', async (req: express.Request, res: express.Response) => {
-  const currentTimestamp = `${new Date().getTime()}`
+  const currentTimestamp = new Date().getTime()
 
   stagingLog(stagingLog('currentTimestamp: ' + JSON.stringify(currentTimestamp)))
   const list = await firebaseFirestore
@@ -654,10 +654,10 @@ router.get('/job-list', async (req: express.Request, res: express.Response) => {
 
       return tasks
     })
-    .catch((err) => {
-      stagingLog(stagingLog('job list query err: ' + err))
-      return []
-    })
+  // .catch((err) => {
+  //   stagingLog(stagingLog('job list query err: ' + err))
+  //   return []
+  // })
 
   var response = {
     responseType: ResponseType.Ephemeral,
