@@ -50,7 +50,12 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
         responseType: ResponseType.Ephemeral,
         replaceOriginal: false,
         deleteOriginal: false,
-        text: "TODO 도움말",
+        text: `
+        ex)
+        /remind list <= 현재 채널에 등록된 리마인더 목록 조회
+        /remind remove {리마인드ID} <= 리마인더 제거
+        /remind {메시지} <= 리마인더 추가
+        `,
         attachments: []
 
       } as CommandResponse
@@ -62,7 +67,12 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
       responseType: ResponseType.Ephemeral,
       replaceOriginal: false,
       deleteOriginal: false,
-      text: "TODO 도움말",
+      text: `
+      ex)
+      /remind list <= 현재 채널에 등록된 리마인더 목록 조회
+      /remind remove {리마인드ID} <= 리마인더 제거
+      /remind {메시지} <= 리마인더 추가
+      `,
       attachments: []
 
     } as CommandResponse
