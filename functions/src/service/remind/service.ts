@@ -126,13 +126,12 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
 
         var targetDate = new Date()
-        targetDate.setHours(scheduleHour)
+        targetDate.setHours(scheduleHour - 9)
         targetDate.setMinutes(scheduleMin, 0, 0)
         return targetDate.getTime()
       } else {
         // 시간이 지난 경우와 동일하게 처리.
         var weeks = schedule.weeks
-
         weeks.push(todayWeek)
         const sorted = sortedWeek(weeks)
         const index = sorted.indexOf(todayWeek)
@@ -160,7 +159,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
         var targetDate = new Date()
         targetDate.setDate(targetDate.getDate() + diff)
-        targetDate.setHours(scheduleHour)
+        targetDate.setHours(scheduleHour - 9)
         targetDate.setMinutes(scheduleMin, 0, 0)
 
         // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
@@ -171,7 +170,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
       // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
 
       var targetDate = new Date()
-      targetDate.setHours(scheduleHour)
+      targetDate.setHours(scheduleHour - 9)
       targetDate.setMinutes(scheduleMin, 0, 0)
       return targetDate.getTime()
     } else if (scheduleHour < current.getHours()) {
@@ -208,7 +207,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
     var targetDate = new Date()
     targetDate.setDate(targetDate.getDate() + diff)
-    targetDate.setHours(scheduleHour)
+    targetDate.setHours(scheduleHour - 9)
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
@@ -244,15 +243,12 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
     var targetDate = new Date()
     targetDate.setDate(targetDate.getDate() + diff)
-    targetDate.setHours(scheduleHour)
+    targetDate.setHours(scheduleHour - 9)
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
     return targetDate.getTime()
   }
-
-  return 0
-
 }
 
 const sortedWeek = (weeks: Array<string>) => {
@@ -436,7 +432,7 @@ const executeJob = async (job: ScheduledJob) => {
 
     var targetDate = new Date()
     targetDate.setDate(targetDate.getDate() + diff)
-    targetDate.setHours(scheduleHour)
+    targetDate.setHours(scheduleHour - 9)
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     return firebaseFirestore

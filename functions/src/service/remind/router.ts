@@ -490,6 +490,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
         await registerPeriodicTask(interaction, periodicAttachment(message).value)
 
         message.text = '등록했습니다'
+        message.attachments = []
         break;
       case 'cancel':
         message.attachments = []
