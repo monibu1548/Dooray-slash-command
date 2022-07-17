@@ -115,9 +115,12 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     // 시간이 이전인 경우
     var scheduleHour: number
     if (schedule.morning === 'morning') {
-      scheduleHour = +schedule.hour
+      scheduleHour = +schedule.hour - 9
+      if (scheduleHour < 0) {
+        scheduleHour -= 12
+      }
     } else {
-      scheduleHour = +schedule.hour + 12
+      scheduleHour = +schedule.hour + 12 - 9
     }
     var scheduleMin = +schedule.min
 
@@ -151,9 +154,12 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
         var scheduleHour: number
         if (schedule.morning === 'morning') {
-          scheduleHour = +schedule.hour
+          scheduleHour = +schedule.hour - 9
+          if (scheduleHour < 0) {
+            scheduleHour -= 12
+          }
         } else {
-          scheduleHour = +schedule.hour + 12
+          scheduleHour = +schedule.hour + 12 - 9
         }
         var scheduleMin = +schedule.min
 
@@ -199,9 +205,12 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
     var scheduleHour: number
     if (schedule.morning === 'morning') {
-      scheduleHour = +schedule.hour
+      scheduleHour = +schedule.hour - 9
+      if (scheduleHour < 0) {
+        scheduleHour -= 12
+      }
     } else {
-      scheduleHour = +schedule.hour + 12
+      scheduleHour = +schedule.hour + 12 - 9
     }
     var scheduleMin = +schedule.min
 
@@ -235,9 +244,12 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
     var scheduleHour: number
     if (schedule.morning === 'morning') {
-      scheduleHour = +schedule.hour
+      scheduleHour = +schedule.hour - 9
+      if (scheduleHour < 0) {
+        scheduleHour -= 12
+      }
     } else {
-      scheduleHour = +schedule.hour + 12
+      scheduleHour = +schedule.hour + 12 - 9
     }
     var scheduleMin = +schedule.min
 
@@ -424,9 +436,12 @@ const executeJob = async (job: ScheduledJob) => {
 
     var scheduleHour: number
     if (schedule.morning === 'morning') {
-      scheduleHour = +schedule.hour
+      scheduleHour = +schedule.hour - 9
+      if (scheduleHour < 0) {
+        scheduleHour -= 12
+      }
     } else {
-      scheduleHour = +schedule.hour + 12
+      scheduleHour = +schedule.hour + 12 - 9
     }
     var scheduleMin = +schedule.min
 
