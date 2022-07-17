@@ -486,9 +486,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
 
     switch (interaction.actionValue) {
       case 'confirm':
-        message.attachments = []
         // DB 적재 및 Flow 종료
-
         await registerPeriodicTask(interaction, periodicAttachment(message).value)
 
         message.text = '등록했습니다'
