@@ -483,10 +483,10 @@ export const registeredTaskListInChannel = async (tenantId: string, channelId: s
 
   for (const job of jobs) {
     text += `
-        id: ${job.taskId}
+        리마인더ID: ${job.taskId}
         메시지: ${job.text}
         반복 설정: ${scheduleText(job.schedule)}
-        알림 예정: ${nextRemindText(job)}
+        다음 알림 예정: ${nextRemindText(job)}
         등록자: ${getUserMention(job.userId, tenantId)}
         ___
       `
