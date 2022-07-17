@@ -115,9 +115,9 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     // 시간이 이전인 경우
     var scheduleHour: number
     if (schedule.morning === 'morning') {
-      scheduleHour = +schedule.hour - 9
+      scheduleHour = +schedule.hour
     } else {
-      scheduleHour = +schedule.hour + 12 - 9
+      scheduleHour = +schedule.hour + 12
     }
     var scheduleMin = +schedule.min
 
@@ -126,7 +126,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
 
         var targetDate = new Date()
-        targetDate.setHours(scheduleHour)
+        targetDate.setUTCHours(scheduleHour)
         targetDate.setMinutes(scheduleMin, 0, 0)
         return targetDate.getTime()
       } else {
@@ -151,15 +151,15 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
         var scheduleHour: number
         if (schedule.morning === 'morning') {
-          scheduleHour = +schedule.hour - 9
+          scheduleHour = +schedule.hour
         } else {
-          scheduleHour = +schedule.hour + 12 - 9
+          scheduleHour = +schedule.hour + 12
         }
         var scheduleMin = +schedule.min
 
         var targetDate = new Date()
         targetDate.setDate(targetDate.getDate() + diff)
-        targetDate.setHours(scheduleHour)
+        targetDate.setUTCHours(scheduleHour)
         targetDate.setMinutes(scheduleMin, 0, 0)
 
         // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
@@ -170,7 +170,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
       // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
 
       var targetDate = new Date()
-      targetDate.setHours(scheduleHour)
+      targetDate.setUTCHours(scheduleHour)
       targetDate.setMinutes(scheduleMin, 0, 0)
       return targetDate.getTime()
     } else if (scheduleHour < current.getHours()) {
@@ -199,16 +199,16 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
     var scheduleHour: number
     if (schedule.morning === 'morning') {
-      scheduleHour = +schedule.hour - 9
+      scheduleHour = +schedule.hour
 
     } else {
-      scheduleHour = +schedule.hour + 12 - 9
+      scheduleHour = +schedule.hour + 12
     }
     var scheduleMin = +schedule.min
 
     var targetDate = new Date()
     targetDate.setDate(targetDate.getDate() + diff)
-    targetDate.setHours(scheduleHour)
+    targetDate.setUTCHours(scheduleHour)
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
@@ -236,16 +236,16 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
     var scheduleHour: number
     if (schedule.morning === 'morning') {
-      scheduleHour = +schedule.hour - 9
+      scheduleHour = +schedule.hour
 
     } else {
-      scheduleHour = +schedule.hour + 12 - 9
+      scheduleHour = +schedule.hour + 12
     }
     var scheduleMin = +schedule.min
 
     var targetDate = new Date()
     targetDate.setDate(targetDate.getDate() + diff)
-    targetDate.setHours(scheduleHour)
+    targetDate.setUTCHours(scheduleHour)
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
@@ -426,16 +426,16 @@ const executeJob = async (job: ScheduledJob) => {
 
     var scheduleHour: number
     if (schedule.morning === 'morning') {
-      scheduleHour = +schedule.hour - 9
+      scheduleHour = +schedule.hour
 
     } else {
-      scheduleHour = +schedule.hour + 12 - 9
+      scheduleHour = +schedule.hour + 12
     }
     var scheduleMin = +schedule.min
 
     var targetDate = new Date()
     targetDate.setDate(targetDate.getDate() + diff)
-    targetDate.setHours(scheduleHour)
+    targetDate.setUTCHours(scheduleHour)
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     return firebaseFirestore
