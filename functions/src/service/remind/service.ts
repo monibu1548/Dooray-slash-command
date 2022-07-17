@@ -152,9 +152,6 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         var scheduleHour: number
         if (schedule.morning === 'morning') {
           scheduleHour = +schedule.hour - 9
-          if (scheduleHour < 0) {
-            scheduleHour -= 6
-          }
         } else {
           scheduleHour = +schedule.hour + 12 - 9
         }
