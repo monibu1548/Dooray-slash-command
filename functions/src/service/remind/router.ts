@@ -505,7 +505,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
 
 
 const periodicAttachment = (message: CommandResponse) => {
-  stagingLog('periodicAttachment: ' + JSON.stringify(message.attachments))
+  stagingLog('[periodicAttachment] message => ' + JSON.stringify(message))
 
   const fields = (message.attachments ?? [])
     .filter((attachment) => {
@@ -516,6 +516,7 @@ const periodicAttachment = (message: CommandResponse) => {
       return casted.fields[0].title === '주기'
     })[0] as AttachmentFields
 
+  stagingLog('[periodicAttachment] return => ' + JSON.stringify(fields.fields[0]))
   return fields.fields[0]
 }
 

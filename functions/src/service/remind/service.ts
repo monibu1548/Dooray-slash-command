@@ -7,8 +7,6 @@ import { CommandInteraction } from "../../interface/commandInteraction";
 
 // 1회성 Task 등록
 export const registerOnceTask = async (request: CommandInteraction, min: string) => {
-  stagingLog('[registerOnceTask] request => ' + JSON.stringify(request))
-  stagingLog('[registerOnceTask] min => ' + min)
 
   const task = new RemindTask(
     '',
@@ -55,6 +53,9 @@ export const registerOnceTask = async (request: CommandInteraction, min: string)
 
 // 주기성 Task 등록
 export const registerPeriodicTask = async (request: CommandInteraction, scheduleMessage: string) => {
+  stagingLog('[registerPeriodicTask] request => ' + JSON.stringify(request))
+  stagingLog('[registerPeriodicTask] scheduleMessage => ' + scheduleMessage)
+
   const schedule = new RemindSchedule(scheduleMessage)
 
   const task = new RemindTask(
