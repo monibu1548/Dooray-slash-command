@@ -117,7 +117,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     if (schedule.morning === 'morning') {
       scheduleHour = +schedule.hour - 9
       if (scheduleHour < 0) {
-        scheduleHour -= 3
+        scheduleHour -= 6
       }
     } else {
       scheduleHour = +schedule.hour + 12 - 9
@@ -156,7 +156,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         if (schedule.morning === 'morning') {
           scheduleHour = +schedule.hour - 9
           if (scheduleHour < 0) {
-            scheduleHour -= 3
+            scheduleHour -= 6
           }
         } else {
           scheduleHour = +schedule.hour + 12 - 9
@@ -207,7 +207,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     if (schedule.morning === 'morning') {
       scheduleHour = +schedule.hour - 9
       if (scheduleHour < 0) {
-        scheduleHour -= 3
+        scheduleHour -= 6
       }
     } else {
       scheduleHour = +schedule.hour + 12 - 9
@@ -246,7 +246,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     if (schedule.morning === 'morning') {
       scheduleHour = +schedule.hour - 9
       if (scheduleHour < 0) {
-        scheduleHour -= 3
+        scheduleHour -= 6
       }
     } else {
       scheduleHour = +schedule.hour + 12 - 9
@@ -438,7 +438,7 @@ const executeJob = async (job: ScheduledJob) => {
     if (schedule.morning === 'morning') {
       scheduleHour = +schedule.hour - 9
       if (scheduleHour < 0) {
-        scheduleHour -= 3
+        scheduleHour -= 6
       }
     } else {
       scheduleHour = +schedule.hour + 12 - 9
