@@ -123,30 +123,163 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     if (scheduleHour === current.getHours()) {
       if (scheduleMin > current.getMinutes()) {
         // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
+
+        var targetDate = new Date()
+        targetDate.setHours(scheduleHour)
+        targetDate.setMinutes(scheduleMin, 0, 0)
+        return targetDate.getTime()
       } else {
         // 시간이 지난 경우와 동일하게 처리.
+        var weeks = schedule.weeks
+
+        weeks.push(todayWeek)
+        const sorted = sortedWeek(weeks)
+        const index = sorted.indexOf(todayWeek)
+
+        var nextWeek: string
+        if (weeks.length - 1 == index) {
+          nextWeek = sorted[0]
+        } else {
+          nextWeek = sorted[index + 1]
+        }
+
+        // diff: n일 뒤가 목표 일
+        var diff = weekWeight(nextWeek) - weekWeight(todayWeek)
+        if (diff <= 0) {
+          diff += 7
+        }
+
+        var scheduleHour: number
+        if (schedule.morning === 'morning') {
+          scheduleHour = +schedule.hour
+        } else {
+          scheduleHour = +schedule.hour + 12
+        }
+        var scheduleMin = +schedule.min
+
+        var targetDate = new Date()
+        targetDate.setDate(targetDate.getDate() + diff)
+        targetDate.setHours(scheduleHour)
+        targetDate.setMinutes(scheduleMin, 0, 0)
+
+        // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
+        return targetDate.getTime()
       }
 
     } else if (scheduleHour > current.getHours()) {
       // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
+
+      var targetDate = new Date()
+      targetDate.setHours(scheduleHour)
+      targetDate.setMinutes(scheduleMin, 0, 0)
+      return targetDate.getTime()
     } else if (scheduleHour < current.getHours()) {
       // 시간이 지난 경우와 동일하게 처리.
     }
 
-
-
     // 시간이 지난 경우
-  } else {
-    // 가장 빠른 대상 요일이 몇일 뒤인지. 
+    var weeks = schedule.weeks
+
+    weeks.push(todayWeek)
+    const sorted = sortedWeek(weeks)
+    const index = sorted.indexOf(todayWeek)
+
+    var nextWeek: string
+    if (weeks.length - 1 == index) {
+      nextWeek = sorted[0]
+    } else {
+      nextWeek = sorted[index + 1]
+    }
+
+    // diff: n일 뒤가 목표 일
+    var diff = weekWeight(nextWeek) - weekWeight(todayWeek)
+    if (diff <= 0) {
+      diff += 7
+    }
+
+    var scheduleHour: number
+    if (schedule.morning === 'morning') {
+      scheduleHour = +schedule.hour
+    } else {
+      scheduleHour = +schedule.hour + 12
+    }
+    var scheduleMin = +schedule.min
+
+    var targetDate = new Date()
+    targetDate.setDate(targetDate.getDate() + diff)
+    targetDate.setHours(scheduleHour)
+    targetDate.setMinutes(scheduleMin, 0, 0)
 
     // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
+    return targetDate.getTime()
+  } else {
+    // 가장 빠른 대상 요일이 몇일 뒤인지. 
+    var weeks = schedule.weeks
 
+    weeks.push(todayWeek)
+    const sorted = sortedWeek(weeks)
+    const index = sorted.indexOf(todayWeek)
+
+    var nextWeek: string
+    if (weeks.length - 1 == index) {
+      nextWeek = sorted[0]
+    } else {
+      nextWeek = sorted[index + 1]
+    }
+
+    // diff: n일 뒤가 목표 일
+    var diff = weekWeight(nextWeek) - weekWeight(todayWeek)
+    if (diff <= 0) {
+      diff += 7
+    }
+
+    var scheduleHour: number
+    if (schedule.morning === 'morning') {
+      scheduleHour = +schedule.hour
+    } else {
+      scheduleHour = +schedule.hour + 12
+    }
+    var scheduleMin = +schedule.min
+
+    var targetDate = new Date()
+    targetDate.setDate(targetDate.getDate() + diff)
+    targetDate.setHours(scheduleHour)
+    targetDate.setMinutes(scheduleMin, 0, 0)
+
+    // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
+    return targetDate.getTime()
   }
-
 
   return 0
 
 }
+
+const sortedWeek = (weeks: Array<string>) => {
+  return weeks.sort((lhs, rhs) => {
+    return weekWeight(lhs) - weekWeight(rhs)
+  })
+}
+
+const weekWeight = (week: string) => {
+  switch (week) {
+    case '월':
+      return 1
+    case '화':
+      return 2
+    case '수':
+      return 3
+    case '목':
+      return 4
+    case '금':
+      return 5
+    case '토':
+      return 6
+    case '일':
+      return 7
+  }
+  return 0
+}
+
 
 // Scheduled Job 등록
 const registerScheduledJob = async (taskId: string, task: RemindTask, timestamp: number) => {
@@ -267,9 +400,53 @@ const executeJob = async (job: ScheduledJob) => {
 
   } else {
     // 다음 task 등록
-  }
+    const current = new Date()
+    var week = new Array('일', '월', '화', '수', '목', '금', '토');
 
-  return Promise.all([])
+    var todayWeek = week[current.getDay()]
+
+    const schedule = job.schedule
+    var weeks = schedule.weeks
+
+    weeks.push(todayWeek)
+    const sorted = sortedWeek(weeks)
+    const index = sorted.indexOf(todayWeek)
+
+    var nextWeek: string
+    if (weeks.length - 1 == index) {
+      nextWeek = sorted[0]
+    } else {
+      nextWeek = sorted[index + 1]
+    }
+
+    // diff: n일 뒤가 목표 일
+    var diff = weekWeight(nextWeek) - weekWeight(todayWeek)
+    if (diff <= 0) {
+      diff += 7
+    }
+
+    var scheduleHour: number
+    if (schedule.morning === 'morning') {
+      scheduleHour = +schedule.hour
+    } else {
+      scheduleHour = +schedule.hour + 12
+    }
+    var scheduleMin = +schedule.min
+
+    var targetDate = new Date()
+    targetDate.setDate(targetDate.getDate() + diff)
+    targetDate.setHours(scheduleHour)
+    targetDate.setMinutes(scheduleMin, 0, 0)
+
+    return firebaseFirestore
+      .collection('scheduledJob')
+      .doc(job.id)
+      .set({
+        timestamp: targetDate.getTime()
+      }, { merge: true })
+      .then(() => { return true })
+      .catch(() => { return false })
+  }
 }
 
 const getUserMention = (userId: string, tenantId: string) => {
@@ -278,8 +455,8 @@ const getUserMention = (userId: string, tenantId: string) => {
 
 // 해당 채널의 task 목록 조회
 export const registeredTaskListInChannel = async (tenantId: string, channelId: string) => {
-  const tasks = await firebaseFirestore
-    .collection('remindTask')
+  const jobs = await firebaseFirestore
+    .collection('scheduledJob')
     .where('tenantId', '==', tenantId)
     .where('channelId', '==', channelId)
     .get()
@@ -288,28 +465,43 @@ export const registeredTaskListInChannel = async (tenantId: string, channelId: s
         return []
       }
 
-      var tasks = Array<RemindTask>()
+      var jobs = Array<ScheduledJob>()
 
       for (const doc of shanshot.docs) {
-        const task = doc.data() as RemindTask
-        tasks.push(task)
+        const job = doc.data() as ScheduledJob
+        jobs.push(job)
       }
 
-      return tasks
+      return jobs
     })
     .catch(() => { return [] })
 
-  var text = `현재 채널에 등록된 리마인더 ${tasks.length}개\n`
+  var text = `현재 채널에 등록된 리마인더 ${jobs.length}개\n`
 
-  for (const task of tasks) {
+  for (const job of jobs) {
     text += `
-        id: ${task.id}
-        text: ${task.text}
-        schedule: ${JSON.stringify(task.schedule)}
-        author: ${getUserMention(task.userId, tenantId)}
+        id: ${job.taskId}
+        메시지: ${job.text}
+        반복 설정: ${scheduleText(job.schedule)}
+        알림 예정: ${nextRemindText(job)}
+        등록자: ${getUserMention(job.userId, tenantId)}
         ___
       `
   }
 
   return text
+}
+
+const scheduleText = (schedule: RemindSchedule | null) => {
+  if (schedule === null) {
+    return '한번'
+  }
+
+  return `매주 ${schedule.weeks.join(', ')} ${schedule.morning} ${schedule.hour}시 ${schedule.min}분`
+}
+
+const nextRemindText = (job: ScheduledJob) => {
+  const date = new Date(job.timestamp)
+
+  return date.toLocaleString()
 }

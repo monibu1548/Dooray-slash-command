@@ -7,7 +7,7 @@ import { firebaseFirestore } from "../../lib/firebase";
 import { stagingLog } from "../../util/logger";
 import { generateUUID } from "../../util/utils";
 import { ScheduledJob } from "./entity";
-import { registeredTaskListInChannel, registerOnceTask, run } from "./service";
+import { registeredTaskListInChannel, registerOnceTask, registerPeriodicTask, run } from "./service";
 
 const router = express.Router();
 
@@ -488,6 +488,9 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
       case 'confirm':
         message.attachments = []
         // DB 적재 및 Flow 종료
+
+        await registerPeriodicTask(interaction, periodicAttachment(message).value)
+
         message.text = '등록했습니다'
         break;
       case 'cancel':
@@ -651,7 +654,6 @@ router.get('/job-list', async (req: express.Request, res: express.Response) => {
     .get()
     .then((snapshot) => {
       if (snapshot.empty) {
-        stagingLog('snapshot is empty...?!')
         return []
       }
 
