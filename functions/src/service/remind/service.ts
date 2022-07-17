@@ -23,13 +23,10 @@ export const registerOnceTask = async (request: CommandInteraction, min: string)
     request.text
   )
 
-  stagingLog('[registerOnceTask] task => ' + JSON.stringify(task))
-
   const taskID = await firebaseFirestore
     .collection('remindTask')
     .add(JSON.parse(JSON.stringify(task)))
     .then((doc) => {
-      stagingLog('[ADD ONCE TASK] success => ' + JSON.stringify(doc.id))
       return doc.id
     })
     .catch((err) => {
@@ -37,7 +34,6 @@ export const registerOnceTask = async (request: CommandInteraction, min: string)
       return ''
     })
 
-  stagingLog('[registerOnceTask] taskID => ' + taskID)
 
   const timestamp = new Date().getTime() + (+min * 60 * 1000) // ms 단위
   const jobID = await registerScheduledJob(taskID, task, timestamp)
@@ -49,9 +45,6 @@ export const registerOnceTask = async (request: CommandInteraction, min: string)
       id: taskID,
       jobId: jobID
     }, { merge: true })
-    .then((result) => {
-      stagingLog('[UPDATE ONCE TASK ID] success => ' + JSON.stringify(result))
-    })
     .catch((err) => {
       stagingLog('[UPDATE ONCE TASK ID] error => ' + JSON.stringify(err))
     })
@@ -81,7 +74,6 @@ export const registerPeriodicTask = async (request: CommandInteraction, schedule
     .collection('remindTask')
     .add(JSON.parse(JSON.stringify(task)))
     .then((doc) => {
-      stagingLog('[ADD PERIODIC TASK] success => ' + JSON.stringify(doc.id))
       return doc.id
     })
     .catch((err) => {
@@ -100,9 +92,6 @@ export const registerPeriodicTask = async (request: CommandInteraction, schedule
       id: taskID,
       jobId: jobID
     }, { merge: true })
-    .then((result) => {
-      stagingLog('[UPDATE PERIODIC TASK ID] success => ' + JSON.stringify(result))
-    })
     .catch((err) => {
       stagingLog('[UPDATE PERIODIC TASK ID] error => ' + JSON.stringify(err))
     })
@@ -179,7 +168,6 @@ const registerScheduledJob = async (taskId: string, task: RemindTask, timestamp:
     .collection('scheduledJob')
     .add(JSON.parse(JSON.stringify(scheduledJob)))
     .then((doc) => {
-      stagingLog('[REGISTER SCHEDULED JOB] success => ' + JSON.stringify(doc.id))
       return doc.id
     })
     .catch((err) => {
@@ -193,9 +181,6 @@ const registerScheduledJob = async (taskId: string, task: RemindTask, timestamp:
     .set({
       id: docID
     }, { merge: true })
-    .then((doc) => {
-      stagingLog('[UPDATE SCHEDULED JOB ID] success => ' + JSON.stringify(doc))
-    })
     .catch((err) => {
       stagingLog('[UPDATE SCHEDULED JOB ID] error => ' + JSON.stringify(err))
     })
@@ -243,7 +228,6 @@ const runToList = async () => {
       return jobs
     })
 
-  stagingLog('[runToList] ' + JSON.stringify(jobList))
   return jobList
 }
 
@@ -323,7 +307,7 @@ export const registeredTaskListInChannel = async (tenantId: string, channelId: s
         text: ${task.text}
         schedule: ${JSON.stringify(task.schedule)}
         author: ${getUserMention(task.userId, tenantId)}
-        _________________________________________________
+        ___
       `
   }
 
