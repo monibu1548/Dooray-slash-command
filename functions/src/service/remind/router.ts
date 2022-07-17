@@ -7,7 +7,7 @@ import { firebaseFirestore } from "../../lib/firebase";
 import { stagingLog } from "../../util/logger";
 import { generateUUID } from "../../util/utils";
 import { ScheduledJob } from "./entity";
-import { registeredTaskListInChannel, registerOnceTask, registerPeriodicTask, run } from "./service";
+import { registeredTaskListInChannel, registerOnceTask, registerPeriodicTask, removeTask, run } from "./service";
 
 const router = express.Router();
 
@@ -33,10 +33,41 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
     // remove 명령어 가능성
     const sliced = request.text.split(' ')
     if (sliced.length == 2 && sliced[0] === 'remove') {
+      await removeTask(sliced[1])
+      var response = {
+        responseType: ResponseType.Ephemeral,
+        replaceOriginal: false,
+        deleteOriginal: false,
+        text: "삭제했습니다",
+        attachments: []
+
+      } as CommandResponse
+      res.status(200).json(response)
+      return
 
     } else {
+      var response = {
+        responseType: ResponseType.Ephemeral,
+        replaceOriginal: false,
+        deleteOriginal: false,
+        text: "TODO 도움말",
+        attachments: []
 
+      } as CommandResponse
+      res.status(200).json(response)
+      return
     }
+  } else if (request.text === '') {
+    var response = {
+      responseType: ResponseType.Ephemeral,
+      replaceOriginal: false,
+      deleteOriginal: false,
+      text: "TODO 도움말",
+      attachments: []
+
+    } as CommandResponse
+    res.status(200).json(response)
+    return
   }
 
   var response = {

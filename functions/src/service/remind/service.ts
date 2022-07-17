@@ -517,3 +517,38 @@ const nextRemindText = (job: ScheduledJob) => {
 
   return date.toLocaleString()
 }
+
+export const removeTask = async (taskID: string) => {
+  const removeJob = firebaseFirestore
+    .collection('scheduledJob')
+    .where('taskID', '==', taskID)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        return false
+      }
+
+      var removeDocs = Array<Promise<boolean>>()
+
+      for (const doc of snapshot.docs) {
+
+        const removeJob = doc.ref.delete()
+          .then(() => { return true })
+          .catch(() => { return false })
+
+        removeDocs.push(removeJob)
+      }
+
+      return removeDocs
+    })
+    .catch(() => { false })
+
+  const removeTask = firebaseFirestore
+    .collection('remindTask')
+    .doc(taskID)
+    .delete()
+    .then(() => { return true })
+    .catch(() => { return false })
+
+  return Promise.all([removeJob, removeTask])
+}
