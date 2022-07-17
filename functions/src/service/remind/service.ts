@@ -521,7 +521,7 @@ const nextRemindText = (job: ScheduledJob) => {
 export const removeTask = async (taskID: string) => {
   const removeJob = firebaseFirestore
     .collection('scheduledJob')
-    .where('taskID', '==', taskID)
+    .where('taskId', '==', taskID)
     .get()
     .then((snapshot) => {
       if (snapshot.empty) {
