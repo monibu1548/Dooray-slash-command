@@ -114,7 +114,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
     // 시간이 이전인 경우
     var scheduleHour: number
-    if (schedule.morning === 'morning') {
+    if (schedule.morning === '오전') {
       scheduleHour = +schedule.hour
     } else {
       scheduleHour = +schedule.hour + 12
@@ -150,7 +150,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         }
 
         var scheduleHour: number
-        if (schedule.morning === 'morning') {
+        if (schedule.morning === '오전') {
           scheduleHour = +schedule.hour
         } else {
           scheduleHour = +schedule.hour + 12
@@ -198,7 +198,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     }
 
     var scheduleHour: number
-    if (schedule.morning === 'morning') {
+    if (schedule.morning === '오전') {
       scheduleHour = +schedule.hour
 
     } else {
@@ -235,7 +235,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     }
 
     var scheduleHour: number
-    if (schedule.morning === 'morning') {
+    if (schedule.morning === '오전') {
       scheduleHour = +schedule.hour
 
     } else {
@@ -425,7 +425,7 @@ const executeJob = async (job: ScheduledJob) => {
     }
 
     var scheduleHour: number
-    if (schedule.morning === 'morning') {
+    if (schedule.morning === '오전') {
       scheduleHour = +schedule.hour
 
     } else {
