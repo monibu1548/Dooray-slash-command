@@ -3,11 +3,9 @@ import { CommandInteraction } from "../../interface/commandInteraction";
 import { AttachmentActionType, AttachmentButtonStyle, AttachmentFields, CommandResponse, isField, ResponseType } from "../../interface/commandReponse";
 import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
-import { firebaseFirestore } from "../../lib/firebase";
 import { stagingLog } from "../../util/logger";
 import { generateUUID } from "../../util/utils";
-import { ScheduledJob } from "./entity";
-import { registeredTaskListInChannel, registerOnceTask, registerPeriodicTask, removeTask, run } from "./service";
+import { nextScheduleTimestamp, registeredTaskListInChannel, registerOnceTask, registerPeriodicTask, removeTask } from "./service";
 
 const router = express.Router();
 
@@ -667,69 +665,17 @@ const weekWeight = (week: string) => {
   return 0
 }
 
-// 디버깅, task 목록 조회
-router.get('/task-list', async (req: express.Request, res: express.Response) => {
-  const tasks = await registeredTaskListInChannel('1387695619080878080', '3209522875565484087')
-  var response = {
-    responseType: ResponseType.Ephemeral,
-    replaceOriginal: false,
-    deleteOriginal: false,
-    text: JSON.stringify(tasks),
-    attachments: []
-
-  } as CommandResponse
-
-  stagingLog(JSON.stringify(response))
-
-  res.status(200).json(tasks)
-});
-
-// 디버깅, 실행 타겟 job 목록 조회
-router.get('/job-list', async (req: express.Request, res: express.Response) => {
-  const currentTimestamp = new Date().getTime()
-
-  stagingLog(stagingLog('currentTimestamp: ' + JSON.stringify(currentTimestamp)))
-  const list = await firebaseFirestore
-    .collection('scheduledJob')
-    .where('timestamp', '<=', currentTimestamp)
-    .get()
-    .then((snapshot) => {
-      if (snapshot.empty) {
-        return []
-      }
-
-      var jobs = Array<ScheduledJob>()
-
-      for (const doc of snapshot.docs) {
-        const job = doc.data() as ScheduledJob
-        jobs.push(job)
-      }
-
-      stagingLog(jobs.length)
-      return jobs
-    })
-    .catch((err) => {
-      stagingLog(stagingLog('job list query err: ' + err))
-      return []
-    })
-
-  var response = {
-    responseType: ResponseType.Ephemeral,
-    replaceOriginal: false,
-    deleteOriginal: false,
-    text: JSON.stringify(list),
-    attachments: []
-
-  } as CommandResponse
-
-  stagingLog(JSON.stringify(response))
-
-  res.status(200).json(response)
-});
-
 router.get('/execute', async (req: express.Request, res: express.Response) => {
-  const result = await run()
-  res.status(200).json(result)
+  const result = nextScheduleTimestamp({
+    weeks: ['월', '화', '수', '목', '금'],
+    morning: '오전',
+    hour: '8',
+    min: '20'
+  })
+
+  const a = new Date(result + (9 * 60 * 60 * 1000))
+
+  res.status(200).json(a.toLocaleString())
 });
 
 module.exports = router

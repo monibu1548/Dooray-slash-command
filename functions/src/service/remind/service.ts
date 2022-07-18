@@ -102,7 +102,7 @@ export const registerPeriodicTask = async (request: CommandInteraction, schedule
 }
 
 // 다음 알림일정 계산. timestamp 반환 
-const nextScheduleTimestamp = (schedule: RemindSchedule) => {
+export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
   const current = new Date()
 
   var week = new Array('일', '월', '화', '수', '목', '금', '토');
@@ -180,15 +180,13 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     // 시간이 지난 경우
     var weeks = schedule.weeks
 
-    weeks.push(todayWeek)
-    const sorted = sortedWeek(weeks)
-    const index = sorted.indexOf(todayWeek)
+    const index = weeks.indexOf(todayWeek)
 
     var nextWeek: string
     if (weeks.length - 1 == index) {
-      nextWeek = sorted[0]
+      nextWeek = weeks[0]
     } else {
-      nextWeek = sorted[index + 1]
+      nextWeek = weeks[index + 1]
     }
 
     // diff: n일 뒤가 목표 일
@@ -399,50 +397,13 @@ const executeJob = async (job: ScheduledJob) => {
 
   } else {
     // 다음 task 등록
-    const current = new Date()
-    var week = new Array('일', '월', '화', '수', '목', '금', '토');
-
-    var todayWeek = week[current.getDay()]
-
-    const schedule = job.schedule
-    var weeks = schedule.weeks
-
-    weeks.push(todayWeek)
-    const sorted = sortedWeek(weeks)
-    const index = sorted.indexOf(todayWeek)
-
-    var nextWeek: string
-    if (weeks.length - 1 == index) {
-      nextWeek = sorted[0]
-    } else {
-      nextWeek = sorted[index + 1]
-    }
-
-    // diff: n일 뒤가 목표 일
-    var diff = weekWeight(nextWeek) - weekWeight(todayWeek)
-    if (diff <= 0) {
-      diff += 7
-    }
-
-    var scheduleHour: number
-    if (schedule.morning === '오전') {
-      scheduleHour = +schedule.hour
-
-    } else {
-      scheduleHour = +schedule.hour + 12
-    }
-    var scheduleMin = +schedule.min
-
-    var targetDate = new Date()
-    targetDate.setDate(targetDate.getDate() + diff)
-    targetDate.setHours(scheduleHour)
-    targetDate.setMinutes(scheduleMin, 0, 0)
+    const nextTimestamp = nextScheduleTimestamp(job.schedule)
 
     return firebaseFirestore
       .collection('scheduledJob')
       .doc(job.id)
       .set({
-        timestamp: targetDate.getTime()
+        timestamp: nextTimestamp
       }, { merge: true })
       .then(() => { return true })
       .catch(() => { return false })

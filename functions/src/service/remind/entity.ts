@@ -15,17 +15,6 @@ export class RemindSchedule {
   }
 }
 
-export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
-  // 현재 요일 찾아두고
-
-  // 시간 기준 으로 안지남
-  // 스케줄 요일 중 오늘 요일의 직전 요일을 찾음
-  // 
-
-  // 시간 기준으로  지남
-  // 스케줄 요일 중 오늘 요일의 다음 요일 찾음
-}
-
 export class RemindTask {
   id: string
   jobId: string
