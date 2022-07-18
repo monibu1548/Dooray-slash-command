@@ -128,7 +128,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         var targetDate = new Date()
         targetDate.setHours(scheduleHour)
         targetDate.setMinutes(scheduleMin, 0, 0)
-        return targetDate.getTime()
+        return targetDate.getTime() - (9 * 60 * 60 * 1000)
       } else {
         // 시간이 지난 경우와 동일하게 처리.
         var weeks = schedule.weeks
@@ -163,7 +163,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         targetDate.setMinutes(scheduleMin, 0, 0)
 
         // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
-        return targetDate.getTime()
+        return targetDate.getTime() - (9 * 60 * 60 * 1000)
       }
 
     } else if (scheduleHour > current.getHours()) {
@@ -172,7 +172,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
       var targetDate = new Date()
       targetDate.setHours(scheduleHour)
       targetDate.setMinutes(scheduleMin, 0, 0)
-      return targetDate.getTime()
+      return targetDate.getTime() - (9 * 60 * 60 * 1000)
     } else if (scheduleHour < current.getHours()) {
       // 시간이 지난 경우와 동일하게 처리.
     }
@@ -212,7 +212,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
-    return targetDate.getTime()
+    return targetDate.getTime() - (9 * 60 * 60 * 1000)
   } else {
     // 가장 빠른 대상 요일이 몇일 뒤인지. 
     var weeks = schedule.weeks
@@ -249,7 +249,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
-    return targetDate.getTime()
+    return targetDate.getTime() - (9 * 60 * 60 * 1000)
   }
 }
 
