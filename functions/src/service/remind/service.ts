@@ -463,7 +463,7 @@ const scheduleText = (schedule: RemindSchedule | null) => {
 
 const nextRemindText = (job: ScheduledJob) => {
   const date = new Date(job.timestamp - (9 * 60 * 60 * 1000))
-  return date.toLocaleString('ko-KR')
+  return date.toLocaleString()
 }
 
 export const removeTask = async (taskID: string) => {
