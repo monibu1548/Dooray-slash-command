@@ -126,7 +126,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
 
         var targetDate = new Date()
-        targetDate.setUTCHours(scheduleHour)
+        targetDate.setHours(scheduleHour)
         targetDate.setMinutes(scheduleMin, 0, 0)
         return targetDate.getTime()
       } else {
@@ -159,7 +159,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
         var targetDate = new Date()
         targetDate.setDate(targetDate.getDate() + diff)
-        targetDate.setUTCHours(scheduleHour)
+        targetDate.setHours(scheduleHour)
         targetDate.setMinutes(scheduleMin, 0, 0)
 
         // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
@@ -170,7 +170,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
       // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
 
       var targetDate = new Date()
-      targetDate.setUTCHours(scheduleHour)
+      targetDate.setHours(scheduleHour)
       targetDate.setMinutes(scheduleMin, 0, 0)
       return targetDate.getTime()
     } else if (scheduleHour < current.getHours()) {
@@ -208,7 +208,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
     var targetDate = new Date()
     targetDate.setDate(targetDate.getDate() + diff)
-    targetDate.setUTCHours(scheduleHour)
+    targetDate.setHours(scheduleHour)
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
@@ -245,7 +245,7 @@ const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
     var targetDate = new Date()
     targetDate.setDate(targetDate.getDate() + diff)
-    targetDate.setUTCHours(scheduleHour)
+    targetDate.setHours(scheduleHour)
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
@@ -435,7 +435,7 @@ const executeJob = async (job: ScheduledJob) => {
 
     var targetDate = new Date()
     targetDate.setDate(targetDate.getDate() + diff)
-    targetDate.setUTCHours(scheduleHour)
+    targetDate.setHours(scheduleHour)
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     return firebaseFirestore
