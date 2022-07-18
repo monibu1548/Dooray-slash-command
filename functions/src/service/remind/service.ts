@@ -122,7 +122,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     var scheduleMin = +schedule.min
 
     if (scheduleHour === current.getHours()) {
-      if (scheduleMin > current.getMinutes()) {
+      if (scheduleMin > current.getMinutes() + 1) {
         // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
 
         var targetDate = new Date()
@@ -132,7 +132,6 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
       } else {
         // 시간이 지난 경우와 동일하게 처리.
         var weeks = schedule.weeks
-        weeks.push(todayWeek)
         const sorted = sortedWeek(weeks)
         const index = sorted.indexOf(todayWeek)
 
