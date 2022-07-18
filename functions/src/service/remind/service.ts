@@ -368,7 +368,7 @@ const executeJob = async (job: ScheduledJob) => {
   const response = {
     channelId: job.channelId,
     responseType: ResponseType.InChannel,
-    text: `${job.text}\n⏰ ${getUserMention(job.userId, job.tenantId)}님의 리마인더 ⏰`,
+    text: `${job.text}\n\n⏰ ${getUserMention(job.userId, job.tenantId)}님의 리마인더 ⏰`,
     attachments: [],
     replaceOriginal: false,
     deleteOriginal: false
@@ -455,7 +455,7 @@ export const registeredTaskListInChannel = async (tenantId: string, channelId: s
 
 const scheduleText = (schedule: RemindSchedule | null) => {
   if (schedule === null) {
-    return '한번'
+    return '한번만'
   }
 
   return `매주 ${schedule.weeks.join(', ')} ${schedule.morning} ${schedule.hour}시 ${schedule.min}분`

@@ -1,9 +1,12 @@
+import axios from "axios";
 import * as express from "express";
+import { CommandDialog } from "../../interface/commandDialog";
 import { CommandInteraction } from "../../interface/commandInteraction";
 import { AttachmentActionType, AttachmentButtonStyle, AttachmentDropdownAction, CommandResponse, ResponseType } from "../../interface/commandReponse";
 import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
 import { stagingLog } from "../../util/logger";
+import { generateUUID } from "../../util/utils";
 
 const router = express.Router();
 
@@ -104,6 +107,64 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
         ]
       }
       break;
+    case 'dialog':
+      await axios.post(`https://${request.tenantDomain}/messenger/api/channels/${request.channelId}/dialogs`, {
+        token: request.cmdToken,
+        triggerId: generateUUID(),
+        dialog: {
+          callbackId: generateUUID(),
+          title: request.text,
+          submitLabel: '리마인더 생성',
+          elements: [
+            {
+              type: "text",
+              subtype: "number",
+              label: "Page Number",
+              name: "page",
+              value: 0,
+              minLength: 1,
+              maxLength: 2,
+              placeholder: "0 ~ 50",
+              hint: "Must in 0 ~ 50",
+              optional: false
+            },
+            {
+              "type": "textarea",
+              "label": "Note",
+              "name": "note",
+              "optional": true
+            },
+            {
+              "type": "select",
+              "label": "Is this important?",
+              "name": "important",
+              "value": "false",
+              "optional": false,
+              "options": [
+                {
+                  "label": "Yes",
+                  "value": "true"
+                },
+                {
+                  "label": "No",
+                  "value": "false"
+                }
+              ]
+            }
+          ]
+        }
+      } as CommandDialog, {
+        headers: {
+          token: request.cmdToken
+        }
+      })
+      response = {
+        text: "Dialog를 띄웁니다",
+        deleteOriginal: false,
+        responseType: ResponseType.InChannel,
+        replaceOriginal: false,
+        attachments: null
+      }
     default:
       response = {
         text: "명령어를 찾을 수 없습니다.",
