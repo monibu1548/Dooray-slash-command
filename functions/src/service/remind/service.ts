@@ -461,7 +461,7 @@ const scheduleText = (schedule: RemindSchedule | null) => {
 }
 
 const nextRemindText = (job: ScheduledJob) => {
-  const date = new Date(job.timestamp - (9 * 60 * 60 * 1000))
+  const date = new Date(job.timestamp + (9 * 60 * 60 * 1000))
   return date.toLocaleString()
 }
 
