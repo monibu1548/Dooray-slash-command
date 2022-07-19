@@ -527,4 +527,10 @@ export const showManualInputDialog = async (request: CommandInteraction) => {
       token: request.cmdToken
     }
   })
+    .then((res) => {
+      stagingLog('[DEBUG] showDialog success => ' + JSON.stringify(res.data))
+    })
+    .catch((err) => {
+      stagingLog('[DEBUG] showDialog err => ' + err)
+    })
 }
