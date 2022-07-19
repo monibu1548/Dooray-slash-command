@@ -1,3 +1,4 @@
+import { CommandDialogResponse } from "./commandDialogResponse"
 import { CommandResponse } from "./commandReponse"
 
 export interface InteractionTenant {
@@ -30,4 +31,12 @@ export interface CommandInteraction {
   commandRequestUrl: string,
   channelLogId: string,
   originalMessage: CommandResponse
+}
+
+export function isInteraction(body: CommandInteraction | CommandDialogResponse): body is CommandInteraction {
+  return (<CommandInteraction>body).channelLogId !== undefined;
+}
+
+export function isDialogResponse(body: CommandInteraction | CommandDialogResponse): body is CommandDialogResponse {
+  return (<CommandDialogResponse>body).submission !== undefined;
 }

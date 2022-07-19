@@ -1,5 +1,6 @@
 import * as express from "express";
-import { CommandInteraction } from "../../interface/commandInteraction";
+import { CommandDialogResponse } from "../../interface/commandDialogResponse";
+import { CommandInteraction, isDialogResponse } from "../../interface/commandInteraction";
 import { AttachmentActionType, AttachmentButtonStyle, AttachmentFields, CommandResponse, isField, ResponseType } from "../../interface/commandReponse";
 import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
@@ -11,7 +12,6 @@ const router = express.Router();
 
 // 슬래시 커맨드 실행 시 호출되는 Router
 router.post(EndPoint.Request, async (req: express.Request, res: express.Response) => {
-  stagingLog('[DEBUG] cmd => ' + JSON.stringify(req.body))
   const request = req.body as CommandRequest
 
   if (request.text === 'list') {
@@ -122,6 +122,28 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
 // 사용자의 상호작용시 호출되는 Router
 router.post(EndPoint.Interaction, async (req: express.Request, res: express.Response) => {
   stagingLog('[DEBUG] interaction => ' + JSON.stringify(req.body))
+
+  if (isDialogResponse(req.body)) {
+
+    const dialogResponse = req.body as CommandDialogResponse
+    const value = dialogResponse.submission.get('manual')
+
+    // value => date 로 변경하면서 유효성 검사
+    stagingLog('[DEBUG] value => ' + value)
+
+    // 리마인더 등록
+
+    const message = {
+      text: 'ㄷ',
+      responseType: ResponseType.Ephemeral,
+      replaceOriginal: true,
+      deleteOriginal: true,
+      attachments: []
+    } as CommandResponse
+    res.status(200).json(message)
+    return
+  }
+
   const interaction = req.body as CommandInteraction
 
   stagingLog(JSON.stringify(interaction))
