@@ -5,7 +5,7 @@ import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
 import { stagingLog } from "../../util/logger";
 import { generateUUID } from "../../util/utils";
-import { nextScheduleTimestamp, registeredTaskListInChannel, registerOnceTask, registerPeriodicTask, removeTask } from "./service";
+import { registeredTaskListInChannel, registerOnceTask, registerPeriodicTask, removeTask } from "./service";
 
 const router = express.Router();
 
@@ -666,14 +666,14 @@ const weekWeight = (week: string) => {
 }
 
 router.get('/execute', async (req: express.Request, res: express.Response) => {
-  const result = nextScheduleTimestamp({
-    weeks: ['월', '화', '수', '목', '금'],
-    morning: '오전',
-    hour: '8',
-    min: '20'
-  })
+  // const result = nextScheduleTimestamp({
+  //   weeks: ['월', '화', '수', '목', '금'],
+  //   morning: '오전',
+  //   hour: '8',
+  //   min: '20'
+  // })
 
-  const a = new Date(result + (9 * 60 * 60 * 1000))
+  // const a = new Date(result + (9 * 60 * 60 * 1000))
 
   const b = new Date()
 
