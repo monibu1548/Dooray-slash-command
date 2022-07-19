@@ -5,7 +5,6 @@ import axios from 'axios';
 import { stagingLog } from "../../util/logger";
 import { CommandInteraction } from "../../interface/commandInteraction";
 import { CommandDialog } from "../../interface/commandDialog";
-import { generateUUID } from "../../util/utils";
 
 // 1회성 Task 등록
 export const registerOnceTask = async (request: CommandInteraction, min: string) => {
