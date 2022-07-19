@@ -4,6 +4,8 @@ import { RemindSchedule, RemindTask, ScheduledJob } from "./entity"
 import axios from 'axios';
 import { stagingLog } from "../../util/logger";
 import { CommandInteraction } from "../../interface/commandInteraction";
+import { CommandDialog } from "../../interface/commandDialog";
+import { generateUUID } from "../../util/utils";
 
 // 1회성 Task 등록
 export const registerOnceTask = async (request: CommandInteraction, min: string) => {
@@ -498,4 +500,31 @@ export const removeTask = async (taskID: string) => {
     .catch(() => { return false })
 
   return Promise.all([removeJob, removeTask])
+}
+
+export const showManualInputDialog = async (request: CommandInteraction) => {
+  return await axios.post(`https://${request.tenant.domain}/messenger/api/channels/${request.channel.id}/dialogs`, {
+    token: request.cmdToken,
+    triggerId: generateUUID(),
+    callbackId: generateUUID(),
+    dialog: {
+      callbackId: generateUUID(),
+      title: request.text,
+      submitLabel: '생성',
+      elements: [
+        {
+          type: 'text',
+          subtype: 'string',
+          label: 'yyyy/MM/dd HH:mm',
+          placeholder: '',
+          hint: '2022/12/22 15:30',
+          optional: false
+        }
+      ]
+    }
+  } as CommandDialog, {
+    headers: {
+      token: request.cmdToken
+    }
+  })
 }

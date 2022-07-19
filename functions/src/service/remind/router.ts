@@ -5,7 +5,7 @@ import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
 import { stagingLog } from "../../util/logger";
 import { generateUUID } from "../../util/utils";
-import { registeredTaskListInChannel, registerOnceTask, registerPeriodicTask, removeTask } from "./service";
+import { registeredTaskListInChannel, registerOnceTask, registerPeriodicTask, removeTask, showManualInputDialog } from "./service";
 
 const router = express.Router();
 
@@ -188,13 +188,20 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
               value: '60min',
               style: AttachmentButtonStyle.default
             },
-            // { 아직 미지원
-            //   name: 'once',
-            //   type: AttachmentActionType.Button,
-            //   text: '직접 설정',
-            //   value: 'manual',
-            //   style: AttachmentButtonStyle.default
-            // }
+            {
+              name: 'once',
+              type: AttachmentActionType.Button,
+              text: '직접 설정',
+              value: 'manual',
+              style: AttachmentButtonStyle.default
+            },
+            {
+              name: 'once',
+              type: AttachmentActionType.Button,
+              text: '취소',
+              value: 'cancel',
+              style: AttachmentButtonStyle.default
+            },
           ]
         }
       ]
@@ -461,32 +468,48 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
       // DB 에 Work Queue 생성
       case '1min':
         await registerOnceTask(interaction, '1')
+        message.attachments = []
+        message.text = '등록했습니다'
         break;
       case '3min':
         await registerOnceTask(interaction, '3')
+        message.attachments = []
+        message.text = '등록했습니다'
         break;
       case '5min':
         await registerOnceTask(interaction, '5')
+        message.attachments = []
+        message.text = '등록했습니다'
         break;
       case '10min':
         await registerOnceTask(interaction, '10')
+        message.attachments = []
+        message.text = '등록했습니다'
         break;
       case '15min':
         await registerOnceTask(interaction, '15')
+        message.attachments = []
+        message.text = '등록했습니다'
         break;
       case '30min':
         await registerOnceTask(interaction, '30')
+        message.attachments = []
+        message.text = '등록했습니다'
         break;
       case '60min':
         await registerOnceTask(interaction, '60')
+        message.attachments = []
+        message.text = '등록했습니다'
         break;
       case 'manual':
         // 미지원
+        await showManualInputDialog(interaction)
+        break;
+      case 'cancel':
+        message.attachments = []
+        message.text = '취소했습니다'
         break;
     }
-
-    message.attachments = []
-    message.text = '등록했습니다'
   }
 
 
