@@ -505,10 +505,10 @@ export const removeTask = async (taskID: string) => {
 export const showManualInputDialog = async (request: CommandInteraction) => {
   return await axios.post(`https://${request.tenant.domain}/messenger/api/channels/${request.channel.id}/dialogs`, {
     token: request.cmdToken,
-    triggerId: generateUUID(),
-    callbackId: generateUUID(),
+    triggerId: request.triggerId,
+    callbackId: request.callbackId,
     dialog: {
-      callbackId: generateUUID(),
+      callbackId: request.callbackId,
       title: request.text,
       submitLabel: '생성',
       elements: [
