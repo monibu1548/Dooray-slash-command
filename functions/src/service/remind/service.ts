@@ -514,13 +514,13 @@ export const showManualInputDialog = async (request: CommandInteraction) => {
         {
           type: 'text',
           subtype: 'string',
-          label: 'yyyy/MM/dd HH:mm',
+          label: '메시지를 보낼 날짜, 시간을 입력해주세요',
           name: 'manual',
-          value: '2022/12/22 15:30',
+          value: '',
           placeholder: '"yyyy/MM/dd HH:mm" 형식으로 입력해주세요',
           minLength: 16,
           maxLength: 16,
-          hint: '2022/12/22 15:30',
+          hint: '"yyyy/MM/dd HH:mm" 형식으로 입력해주세요. ex) 2022/12/22 15:30',
           optional: false
         }
       ]
@@ -530,10 +530,4 @@ export const showManualInputDialog = async (request: CommandInteraction) => {
       token: request.cmdToken
     }
   })
-    .then((res) => {
-      stagingLog('[DEBUG] showDialog success => ' + JSON.stringify(res.data))
-    })
-    .catch((err) => {
-      stagingLog('[DEBUG] showDialog err => ' + err)
-    })
 }

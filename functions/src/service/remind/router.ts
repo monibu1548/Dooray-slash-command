@@ -11,9 +11,8 @@ const router = express.Router();
 
 // 슬래시 커맨드 실행 시 호출되는 Router
 router.post(EndPoint.Request, async (req: express.Request, res: express.Response) => {
+  stagingLog('[DEBUG] cmd => ' + JSON.stringify(req))
   const request = req.body as CommandRequest
-
-  stagingLog(JSON.stringify(request))
 
   if (request.text === 'list') {
     const text = await registeredTaskListInChannel(request.tenantId, request.channelId)
@@ -122,6 +121,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
 
 // 사용자의 상호작용시 호출되는 Router
 router.post(EndPoint.Interaction, async (req: express.Request, res: express.Response) => {
+  stagingLog('[DEBUG] interaction => ' + JSON.stringify(req))
   const interaction = req.body as CommandInteraction
 
   stagingLog(JSON.stringify(interaction))
