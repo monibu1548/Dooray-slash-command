@@ -11,6 +11,8 @@ export interface DialogElementText {
   label: string,
   name: string,
   value: number,
+  minLength: number,
+  maxLength: number,
   placeholder: string,
   hint: string,
   optional: boolean

@@ -516,7 +516,11 @@ export const showManualInputDialog = async (request: CommandInteraction) => {
           type: 'text',
           subtype: 'string',
           label: 'yyyy/MM/dd HH:mm',
-          placeholder: '',
+          name: 'manual',
+          value: '2022/12/22 15:30',
+          placeholder: '"yyyy/MM/dd HH:mm" 형식으로 입력해주세요',
+          minLength: 16,
+          maxLength: 16,
           hint: '2022/12/22 15:30',
           optional: false
         }
