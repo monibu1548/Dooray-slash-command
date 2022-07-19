@@ -5,6 +5,51 @@ import axios from 'axios';
 import { stagingLog } from "../../util/logger";
 import { CommandInteraction } from "../../interface/commandInteraction";
 import { CommandDialog } from "../../interface/commandDialog";
+import { CommandDialogResponse } from "../../interface/commandDialogResponse";
+
+
+// 수동 1회성 Task 등록
+export const registerOnceManualTask = async (dialogResponse: CommandDialogResponse, timestamp: number) => {
+  const task = new RemindTask(
+    '',
+    '',
+    null,
+    dialogResponse.tenant.id,
+    dialogResponse.tenant.domain,
+    dialogResponse.user.id,
+    dialogResponse.cmdToken,
+    dialogResponse.channel.id,
+    dialogResponse.channel.name,
+    ''
+  )
+
+  const taskID = await firebaseFirestore
+    .collection('remindTask')
+    .add(JSON.parse(JSON.stringify(task)))
+    .then((doc) => {
+      return doc.id
+    })
+    .catch((err) => {
+      stagingLog('[ADD ONCE TASK] error => ' + JSON.stringify(err))
+      return ''
+    })
+
+  const jobID = await registerScheduledJob(taskID, task, timestamp)
+
+  await firebaseFirestore
+    .collection('remindTask')
+    .doc(taskID)
+    .set({
+      id: taskID,
+      jobId: jobID
+    }, { merge: true })
+    .catch((err) => {
+      stagingLog('[UPDATE ONCE TASK ID] error => ' + JSON.stringify(err))
+    })
+
+  // TODO: 에러처리
+  return true
+}
 
 // 1회성 Task 등록
 export const registerOnceTask = async (request: CommandInteraction, min: string) => {

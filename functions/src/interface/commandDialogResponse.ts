@@ -3,7 +3,7 @@ import { InteractionChannel, InteractionTenant, InteractionUser } from "./comman
 export interface CommandDialogResponse {
   type: string,
   tenant: InteractionTenant,
-  chnnel: InteractionChannel,
+  channel: InteractionChannel,
   user: InteractionUser,
   responseUrl: string,
   cmdToken: string,
