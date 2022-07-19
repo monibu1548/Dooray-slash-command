@@ -143,7 +143,7 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
               "options": [
                 {
                   "label": "Yes",
-                  "value": "true"
+                  "value": "t"
                 },
                 {
                   "label": "No",

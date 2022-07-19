@@ -113,7 +113,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     // 오늘이 대상일에 포함된 경우
 
     // 시간이 이전인 경우
-    var scheduleHour: number
+    var scheduleHour: number = 0
     if (schedule.morning === '오전') {
       scheduleHour = +schedule.hour
     } else {
@@ -121,7 +121,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     }
     var scheduleMin = +schedule.min
 
-    if (scheduleHour === current.getHours()) {
+    if (scheduleHour === current.getHours() + 9) {
       if (scheduleMin > current.getMinutes() + 1) {
         // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
 
@@ -148,7 +148,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
           diff += 7
         }
 
-        var scheduleHour: number
+        var scheduleHour: number = 0
         if (schedule.morning === '오전') {
           scheduleHour = +schedule.hour
         } else {
@@ -165,14 +165,14 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         return targetDate.getTime() - (9 * 60 * 60 * 1000)
       }
 
-    } else if (scheduleHour > current.getHours()) {
+    } else if (scheduleHour > current.getHours() + 9) {
       // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
 
       var targetDate = new Date()
       targetDate.setHours(scheduleHour)
       targetDate.setMinutes(scheduleMin, 0, 0)
       return targetDate.getTime() - (9 * 60 * 60 * 1000)
-    } else if (scheduleHour < current.getHours()) {
+    } else if (scheduleHour < current.getHours() + 9) {
       // 시간이 지난 경우와 동일하게 처리.
     }
 
@@ -194,7 +194,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
       diff += 7
     }
 
-    var scheduleHour: number
+    var scheduleHour: number = 0
     if (schedule.morning === '오전') {
       scheduleHour = +schedule.hour
 
@@ -231,7 +231,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
       diff += 7
     }
 
-    var scheduleHour: number
+    var scheduleHour: number = 0
     if (schedule.morning === '오전') {
       scheduleHour = +schedule.hour
 

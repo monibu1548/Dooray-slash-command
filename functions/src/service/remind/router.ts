@@ -675,7 +675,9 @@ router.get('/execute', async (req: express.Request, res: express.Response) => {
 
   const a = new Date(result + (9 * 60 * 60 * 1000))
 
-  res.status(200).json(a.toLocaleString())
+  const b = new Date()
+
+  res.status(200).json(b.getHours() + 9)
 });
 
 module.exports = router
