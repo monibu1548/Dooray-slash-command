@@ -240,7 +240,11 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     // 시간이 지난 경우
     var weeks = schedule.weeks
 
+    stagingLog('[nextScheduleTimestamp] weeks: ' + weeks.join(', '))
+
     const index = weeks.indexOf(todayWeek)
+
+    stagingLog('[nextScheduleTimestamp] index: ' + index)
 
     var nextWeek: string
     if (weeks.length - 1 == index) {
@@ -249,11 +253,16 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
       nextWeek = weeks[index + 1]
     }
 
+    stagingLog('[nextScheduleTimestamp] nextWeek: ' + nextWeek)
+    stagingLog('[nextScheduleTimestamp] todayWeek: ' + todayWeek)
+
     // diff: n일 뒤가 목표 일
     var diff = weekWeight(nextWeek) - weekWeight(todayWeek)
     if (diff <= 0) {
       diff += 7
     }
+
+    stagingLog('[nextScheduleTimestamp] diff: ' + diff)
 
     var scheduleHour: number = 0
     if (schedule.morning === '오전') {
