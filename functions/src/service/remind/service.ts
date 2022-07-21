@@ -150,7 +150,7 @@ export const registerPeriodicTask = async (request: CommandInteraction, schedule
 // 다음 알림일정 계산. timestamp 반환 
 export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
   stagingLog('[nextScheduleTimestamp] called')
-  const current = new Date()
+  var current = new Date(new Date().getTime() + (9 * 60 * 60 * 1000))
 
   var week = new Array('일', '월', '화', '수', '목', '금', '토');
 
