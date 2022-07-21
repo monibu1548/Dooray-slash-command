@@ -149,13 +149,17 @@ export const registerPeriodicTask = async (request: CommandInteraction, schedule
 
 // 다음 알림일정 계산. timestamp 반환 
 export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
+  stagingLog('[nextScheduleTimestamp] called')
   const current = new Date()
 
   var week = new Array('일', '월', '화', '수', '목', '금', '토');
 
   var todayWeek = week[current.getDay()]
   // 1.요일 비교
+
+  stagingLog('[nextScheduleTimestamp] today: ' + todayWeek)
   if (schedule.weeks.indexOf(todayWeek) >= 0) {
+    stagingLog('[nextScheduleTimestamp] 오늘이 대상일에 포함')
     // 오늘이 대상일에 포함된 경우
 
     // 시간이 이전인 경우
@@ -167,8 +171,14 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     }
     var scheduleMin = +schedule.min
 
+    stagingLog('[nextScheduleTimestamp] scheduleHour:' + scheduleHour)
+    stagingLog('[nextScheduleTimestamp] scheduleMin:' + scheduleMin)
+
     if (scheduleHour === current.getHours() + 9) {
+      stagingLog('[nextScheduleTimestamp] scheduleHour === current.getHours() + 9')
+
       if (scheduleMin > current.getMinutes() + 1) {
+        stagingLog('[nextScheduleTimestamp] scheduleMin > current.getMinutes() + 1')
         // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
 
         var targetDate = new Date()
@@ -176,6 +186,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         targetDate.setMinutes(scheduleMin, 0, 0)
         return targetDate.getTime() - (9 * 60 * 60 * 1000)
       } else {
+        stagingLog('[nextScheduleTimestamp] scheduleMin <= current.getMinutes() + 1')
         // 시간이 지난 경우와 동일하게 처리.
         var weeks = schedule.weeks
         const sorted = sortedWeek(weeks)
@@ -193,6 +204,8 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         if (diff <= 0) {
           diff += 7
         }
+
+        stagingLog('[nextScheduleTimestamp] diff:' + diff)
 
         var scheduleHour: number = 0
         if (schedule.morning === '오전') {
@@ -212,6 +225,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
       }
 
     } else if (scheduleHour > current.getHours() + 9) {
+      stagingLog('[nextScheduleTimestamp] scheduleHour > current.getHours() + 9')
       // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
 
       var targetDate = new Date()
@@ -219,6 +233,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
       targetDate.setMinutes(scheduleMin, 0, 0)
       return targetDate.getTime() - (9 * 60 * 60 * 1000)
     } else if (scheduleHour < current.getHours() + 9) {
+      stagingLog('[nextScheduleTimestamp] scheduleHour < current.getHours() + 9')
       // 시간이 지난 경우와 동일하게 처리.
     }
 
@@ -255,8 +270,11 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
+
+    stagingLog('[nextScheduleTimestamp] return :' + (targetDate.getTime() - (9 * 60 * 60 * 1000)))
     return targetDate.getTime() - (9 * 60 * 60 * 1000)
   } else {
+    stagingLog('[nextScheduleTimestamp] 오늘이 미포함인 경우')
     // 가장 빠른 대상 요일이 몇일 뒤인지. 
     var weeks = schedule.weeks
 
@@ -277,6 +295,8 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
       diff += 7
     }
 
+    stagingLog('[nextScheduleTimestamp] diff:' + diff)
+
     var scheduleHour: number = 0
     if (schedule.morning === '오전') {
       scheduleHour = +schedule.hour
@@ -292,6 +312,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     targetDate.setMinutes(scheduleMin, 0, 0)
 
     // 현재 날짜 + n일, 알림 시,분 설정하여 timestamp 계산
+    stagingLog('[nextScheduleTimestamp] result: ' + (targetDate.getTime() - (9 * 60 * 60 * 1000)))
     return targetDate.getTime() - (9 * 60 * 60 * 1000)
   }
 }
