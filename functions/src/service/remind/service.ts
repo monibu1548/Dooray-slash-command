@@ -216,6 +216,10 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         var scheduleMin = +schedule.min
 
         var targetDate = new Date()
+        // 날짜 설정 시 KTC Date hour가 0 ~ 9 인 경우 (== UTC로는 전날인 경우 setDate 시 -1일이 되므로), 하루 보정
+        if (current.getHours() + 9 < 9) {
+          diff += 1
+        }
         targetDate.setDate(targetDate.getDate() + diff)
         targetDate.setHours(scheduleHour)
         targetDate.setMinutes(scheduleMin, 0, 0)
@@ -274,6 +278,11 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     var scheduleMin = +schedule.min
 
     var targetDate = new Date()
+
+    // 날짜 설정 시 KTC Date hour가 0 ~ 9 인 경우 (== UTC로는 전날인 경우 setDate 시 -1일이 되므로), 하루 보정
+    if (current.getHours() + 9 < 9) {
+      diff += 1
+    }
     targetDate.setDate(targetDate.getDate() + diff)
     targetDate.setHours(scheduleHour)
     targetDate.setMinutes(scheduleMin, 0, 0)
@@ -316,6 +325,11 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     var scheduleMin = +schedule.min
 
     var targetDate = new Date()
+
+    // 날짜 설정 시 KTC Date hour가 0 ~ 9 인 경우 (== UTC로는 전날인 경우 setDate 시 -1일이 되므로), 하루 보정
+    if (current.getHours() + 9 < 9) {
+      diff += 1
+    }
     targetDate.setDate(targetDate.getDate() + diff)
     targetDate.setHours(scheduleHour)
     targetDate.setMinutes(scheduleMin, 0, 0)
