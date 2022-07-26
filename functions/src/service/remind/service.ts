@@ -217,7 +217,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
         var targetDate = new Date()
         // 날짜 설정 시 KTC Date hour가 0 ~ 9 인 경우 (== UTC로는 전날인 경우 setDate 시 -1일이 되므로), 하루 보정
-        if (current.getHours() + 9 < 9) {
+        if (current.getHours() < 9) {
           stagingLog('[nextScheduleTimestamp] 하루 보정 O => ' + current.getHours())
           diff += 1
         } else {
@@ -284,11 +284,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     var targetDate = new Date()
 
     // 날짜 설정 시 KTC Date hour가 0 ~ 9 인 경우 (== UTC로는 전날인 경우 setDate 시 -1일이 되므로), 하루 보정
-    if (current.getHours() + 9 < 9) {
-      diff += 1
-    }
-
-    if (current.getHours() + 9 < 9) {
+    if (current.getHours() < 9) {
       stagingLog('[nextScheduleTimestamp]123 하루 보정 O => ' + current.getHours())
       diff += 1
     } else {
@@ -339,7 +335,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     var targetDate = new Date()
 
     // 날짜 설정 시 KTC Date hour가 0 ~ 9 인 경우 (== UTC로는 전날인 경우 setDate 시 -1일이 되므로), 하루 보정
-    if (current.getHours() + 9 < 9) {
+    if (current.getHours() < 9) {
       diff += 1
     }
     targetDate.setDate(targetDate.getDate() + diff)
