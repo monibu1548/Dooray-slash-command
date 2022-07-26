@@ -287,6 +287,14 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     if (current.getHours() + 9 < 9) {
       diff += 1
     }
+
+    if (current.getHours() + 9 < 9) {
+      stagingLog('[nextScheduleTimestamp]123 하루 보정 O => ' + current.getHours())
+      diff += 1
+    } else {
+      stagingLog('[nextScheduleTimestamp]45  하루 보정 X => ' + current.getHours())
+    }
+
     targetDate.setDate(targetDate.getDate() + diff)
     targetDate.setHours(scheduleHour)
     targetDate.setMinutes(scheduleMin, 0, 0)
