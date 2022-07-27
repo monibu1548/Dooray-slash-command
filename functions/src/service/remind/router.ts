@@ -14,6 +14,24 @@ const router = express.Router();
 router.post(EndPoint.Request, async (req: express.Request, res: express.Response) => {
   const request = req.body as CommandRequest
 
+  if (request.text === 'help') {
+    var response = {
+      responseType: ResponseType.Ephemeral,
+      replaceOriginal: false,
+      deleteOriginal: false,
+      text: `
+        /remind {메시지} 👈 리마인더 추가
+        /remind list 👈 현재 채널에 등록된 리마인더 목록 조회
+        /remind remove {리마인드ID} 👈 리마인더 제거
+        /remind help 👈 도움말
+        `,
+      attachments: []
+
+    } as CommandResponse
+    res.status(200).json(response)
+    return
+  }
+
   if (request.text === 'list') {
     const text = await registeredTaskListInChannel(request.tenantId, request.channelId)
     var response = {
@@ -48,10 +66,10 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
         replaceOriginal: false,
         deleteOriginal: false,
         text: `
-        ex)
-        /remind list <= 현재 채널에 등록된 리마인더 목록 조회
-        /remind remove {리마인드ID} <= 리마인더 제거
-        /remind {메시지} <= 리마인더 추가
+        /remind {메시지} 👈 리마인더 추가
+        /remind list 👈 현재 채널에 등록된 리마인더 목록 조회
+        /remind remove {리마인드ID} 👈 리마인더 제거
+        /remind help 👈 도움말
         `,
         attachments: []
 
@@ -65,11 +83,11 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
       replaceOriginal: false,
       deleteOriginal: false,
       text: `
-      ex)
-      /remind list <= 현재 채널에 등록된 리마인더 목록 조회
-      /remind remove {리마인드ID} <= 리마인더 제거
-      /remind {메시지} <= 리마인더 추가
-      `,
+        /remind {메시지} 👈 리마인더 추가
+        /remind list 👈 현재 채널에 등록된 리마인더 목록 조회
+        /remind remove {리마인드ID} 👈 리마인더 제거
+        /remind help 👈 도움말
+        `,
       attachments: []
 
     } as CommandResponse
