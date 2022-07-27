@@ -147,20 +147,35 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
     // value => date 로 변경하면서 유효성 검사
     stagingLog('[DEBUG] value => ' + JSON.stringify(value))
 
-    const [dateComponents, timeComponents] = value.split(' ');
-    const [year, month, day] = dateComponents.split('/');
-    const [hours, minutes] = timeComponents.split(':');
+    var date: Date
+    try {
+      const [dateComponents, timeComponents] = value.split(' ');
+      const [year, month, day] = dateComponents.split('/');
+      const [hours, minutes] = timeComponents.split(':');
 
-    const date = new Date(+year, +month - 1, +day, +hours, +minutes, 0);
+      date = new Date(+year, +month - 1, +day, +hours, +minutes, 0);
+    } catch (error) {
+      await messageToChannel('날짜를 가져오는 과정에서 오류가 발생했습니다', dialogResponse.tenant.domain, dialogResponse.cmdToken, dialogResponse.channel.id, ResponseType.Ephemeral)
+      const message = {
+        text: '날짜를 가져오는 과정에서 오류가 발생했습니다',
+        responseType: ResponseType.Ephemeral,
+        replaceOriginal: true,
+        deleteOriginal: true,
+        attachments: []
+      } as CommandResponse
+      res.status(200).json(message)
+      return
+    }
+
     await messageToChannel("등록 중. 잠시만 기다려주세요 🚗\n잠시 후 '/remind list' 명령어로 등록된 리마인더를 확인해주세요", dialogResponse.tenant.domain, dialogResponse.cmdToken, dialogResponse.channel.id, ResponseType.Ephemeral)
 
-    await registerOnceManualTask(dialogResponse, messageText, date.getTime() - (9 * 60 * 60 * 1000))
+    await registerOnceManualTask(dialogResponse, messageText, date!.getTime() - (9 * 60 * 60 * 1000))
 
     await messageToChannel("등록했습니다", dialogResponse.tenant.domain, dialogResponse.cmdToken, dialogResponse.channel.id, ResponseType.Ephemeral)
 
     // 리마인더 등록
     const message = {
-      text: date.toLocaleString(),
+      text: date!.toLocaleString(),
       responseType: ResponseType.Ephemeral,
       replaceOriginal: true,
       deleteOriginal: true,
