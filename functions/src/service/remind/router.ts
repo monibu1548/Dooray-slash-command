@@ -6,7 +6,7 @@ import { CommandRequest } from "../../interface/commandRequest";
 import { EndPoint } from "../../lib/contants";
 import { stagingLog } from "../../util/logger";
 import { generateUUID } from "../../util/utils";
-import { registeredTaskListInChannel, registerOnceTask, registerPeriodicTask, removeTask, showManualInputDialog } from "./service";
+import { messageToChannel, registeredTaskListInChannel, registerOnceManualTask, registerOnceTask, registerPeriodicTask, removeTask, showManualInputDialog } from "./service";
 
 const router = express.Router();
 
@@ -121,7 +121,6 @@ router.post(EndPoint.Request, async (req: express.Request, res: express.Response
 
 // 사용자의 상호작용시 호출되는 Router
 router.post(EndPoint.Interaction, async (req: express.Request, res: express.Response) => {
-  stagingLog('[DEBUG] interaction => ' + JSON.stringify(req.body))
 
   if (isDialogResponse(req.body)) {
 
@@ -137,10 +136,11 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
 
     const date = new Date(+year, +month - 1, +day, +hours, +minutes, 0);
 
-    stagingLog('[DEBUG] date => ' + date.toLocaleString())
+    await registerOnceManualTask(dialogResponse, date.getTime())
+
+    await messageToChannel("등록했습니다", dialogResponse.tenant.domain, dialogResponse.cmdToken, dialogResponse.channel.id, ResponseType.Ephemeral)
 
     // 리마인더 등록
-
     const message = {
       text: date.toLocaleString(),
       responseType: ResponseType.Ephemeral,
@@ -534,6 +534,8 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
       case 'manual':
         // 미지원
         await showManualInputDialog(interaction)
+        message.attachments = []
+        message.text = '직접 설정을 완료해주세요'
         break;
       case 'cancel':
         message.attachments = []
@@ -574,7 +576,6 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
 
   // 2. 확인
   if (interaction.actionName == 'confirm') {
-    stagingLog('action name: confirm')
 
     switch (interaction.actionValue) {
       case 'confirm':

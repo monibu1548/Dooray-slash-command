@@ -452,6 +452,21 @@ const runToList = async () => {
   return jobList
 }
 
+export const messageToChannel = async (message: string, tenantDomain: string, cmdToken: string, channelId: string, responseType: ResponseType) => {
+  const url = `https://${tenantDomain}/messenger/api/commands/hook/${cmdToken}`
+
+  const response = {
+    channelId: channelId,
+    responseType: responseType,
+    text: message,
+    attachments: [],
+    replaceOriginal: false,
+    deleteOriginal: false
+
+  } as CommandResponse
+
+  return await axios.post(url, response)
+}
 // Job 실행
 const executeJob = async (job: ScheduledJob) => {
   const url = `https://${job.tenantDomain}/messenger/api/commands/hook/${job.cmdToken}`
