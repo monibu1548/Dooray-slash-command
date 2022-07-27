@@ -129,8 +129,8 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
     const value = dialogResponse.submission
 
     // value => date 로 변경하면서 유효성 검사
-    stagingLog('[DEBUG] value => ' + value)
-    stagingLog('[DEBUG] value type => ' + (typeof value))
+    stagingLog('[DEBUG] value => ' + JSON.stringify(value))
+    stagingLog('[DEBUG] value type => ' + (value.constructor.name))
 
     // 리마인더 등록
 
