@@ -134,7 +134,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
     const [hours, minutes] = timeComponents.split(':');
 
     const date = new Date(+year, +month - 1, +day, +hours, +minutes, 0);
-    await messageToChannel("등록중입니다 🚗", dialogResponse.tenant.domain, dialogResponse.cmdToken, dialogResponse.channel.id, ResponseType.Ephemeral)
+    await messageToChannel("등록 중. 잠시만 기다려주세요 🚗", dialogResponse.tenant.domain, dialogResponse.cmdToken, dialogResponse.channel.id, ResponseType.Ephemeral)
 
 
     await registerOnceManualTask(dialogResponse, messageText, date.getTime() - (9 * 60 * 60 * 1000))
@@ -496,46 +496,46 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
     switch (interaction.actionValue) {
       // DB 에 Work Queue 생성
       case '1min':
-        await messageToChannel("등록중입니다 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
+        await messageToChannel("등록 중. 잠시만 기다려주세요 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
         await registerOnceTask(interaction, '1')
         message.attachments = []
-        message.text = '✔️ 등록했습니다'
+        message.text = '등록했습니다 ✔️'
         break;
       case '3min':
-        await messageToChannel("등록중입니다 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
+        await messageToChannel("등록 중. 잠시만 기다려주세요 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
         await registerOnceTask(interaction, '3')
         message.attachments = []
-        message.text = '✔️ 등록했습니다'
+        message.text = '등록했습니다 ✔️'
         break;
       case '5min':
-        await messageToChannel("등록중입니다 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
+        await messageToChannel("등록 중. 잠시만 기다려주세요 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
         await registerOnceTask(interaction, '5')
         message.attachments = []
-        message.text = '✔️ 등록했습니다'
+        message.text = '등록했습니다 ✔️'
         break;
       case '10min':
-        await messageToChannel("등록중입니다 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
+        await messageToChannel("등록 중. 잠시만 기다려주세요 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
         await registerOnceTask(interaction, '10')
         message.attachments = []
-        message.text = '✔️ 등록했습니다'
+        message.text = '등록했습니다 ✔️'
         break;
       case '15min':
-        await messageToChannel("등록중입니다 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
+        await messageToChannel("등록 중. 잠시만 기다려주세요 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
         await registerOnceTask(interaction, '15')
         message.attachments = []
-        message.text = '✔️ 등록했습니다'
+        message.text = '등록했습니다 ✔️'
         break;
       case '30min':
-        await messageToChannel("등록중입니다 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
+        await messageToChannel("등록 중. 잠시만 기다려주세요 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
         await registerOnceTask(interaction, '30')
         message.attachments = []
         message.text = '등록했습니다'
         break;
       case '60min':
-        await messageToChannel("등록중입니다 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
+        await messageToChannel("등록 중. 잠시만 기다려주세요 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
         await registerOnceTask(interaction, '60')
         message.attachments = []
-        message.text = '✔️ 등록했습니다'
+        message.text = '등록했습니다 ✔️'
         break;
       case 'manual':
         // 미지원
@@ -587,7 +587,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
     switch (interaction.actionValue) {
       case 'confirm':
         // DB 적재 및 Flow 종료
-        await messageToChannel("등록중입니다 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
+        await messageToChannel("등록 중. 잠시만 기다려주세요 🚗", interaction.tenant.domain, interaction.cmdToken, interaction.channel.id, ResponseType.Ephemeral)
 
         await registerPeriodicTask(interaction, periodicAttachment(message).value)
 
@@ -727,20 +727,5 @@ const weekWeight = (week: string) => {
   }
   return 0
 }
-
-router.get('/execute', async (req: express.Request, res: express.Response) => {
-  // const result = nextScheduleTimestamp({
-  //   weeks: ['월', '화', '수', '목', '금'],
-  //   morning: '오전',
-  //   hour: '8',
-  //   min: '20'
-  // })
-
-  // const a = new Date(result + (9 * 60 * 60 * 1000))
-
-  const b = new Date()
-
-  res.status(200).json(b.getHours() + 9)
-});
 
 module.exports = router

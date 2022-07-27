@@ -625,7 +625,7 @@ export const showManualInputDialog = async (request: CommandInteraction) => {
           value: request.text,
           placeholder: '메시지 내용을 작성해주세요',
           minLength: 1,
-          maxLength: 500,
+          maxLength: 299,
           hint: '메시지 내용을 작성해주세요',
           optional: false
         },
