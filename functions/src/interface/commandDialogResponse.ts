@@ -7,8 +7,6 @@ export interface CommandDialogResponse {
   user: InteractionUser,
   responseUrl: string,
   cmdToken: string,
-  updateCmdToken: string,
-  prevCmdToken: string,
   callbackId: string,
   submission: Map<string, string>
 }

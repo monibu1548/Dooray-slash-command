@@ -218,10 +218,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         var targetDate = new Date()
         // 날짜 설정 시 KTC Date hour가 0 ~ 9 인 경우 (== UTC로는 전날인 경우 setDate 시 -1일이 되므로), 하루 보정
         if (current.getHours() < 9) {
-          stagingLog('[nextScheduleTimestamp] 하루 보정 O => ' + current.getHours())
           diff += 1
-        } else {
-          stagingLog('[nextScheduleTimestamp] 하루 보정 X => ' + current.getHours())
         }
 
         targetDate.setDate(targetDate.getDate() + diff)
@@ -285,10 +282,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
     // 날짜 설정 시 KTC Date hour가 0 ~ 9 인 경우 (== UTC로는 전날인 경우 setDate 시 -1일이 되므로), 하루 보정
     if (current.getHours() < 9) {
-      stagingLog('[nextScheduleTimestamp]123 하루 보정 O => ' + current.getHours())
       diff += 1
-    } else {
-      stagingLog('[nextScheduleTimestamp]45  하루 보정 X => ' + current.getHours())
     }
 
     targetDate.setDate(targetDate.getDate() + diff)
@@ -614,10 +608,10 @@ export const showManualInputDialog = async (request: CommandInteraction) => {
           label: '메시지를 보낼 날짜, 시간을 입력해주세요',
           name: 'manual',
           value: '',
-          placeholder: '"yyyy/MM/dd HH:mm" 형식으로 입력해주세요',
+          placeholder: 'yyyy/MM/dd HH:mm 형식으로 입력해주세요. ex) 2022/12/22 15:30',
           minLength: 16,
           maxLength: 16,
-          hint: '"yyyy/MM/dd HH:mm" 형식으로 입력해주세요. ex) 2022/12/22 15:30',
+          hint: 'yyyy/MM/dd HH:mm 형식으로 입력해주세요. ex) 2022/12/22 15:30',
           optional: false
         }
       ]
