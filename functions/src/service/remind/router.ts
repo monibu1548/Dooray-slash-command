@@ -533,7 +533,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
       case 'manual':
         // 미지원
         const res = await showManualInputDialog(interaction)
-        stagingLog('[DEBUG] showManualInputDialog => ' + JSON.stringify(res))
+        stagingLog('[DEBUG] showManualInputDialog => ' + JSON.stringify(res.data))
         message.attachments = []
         message.text = '직접 설정을 완료해주세요'
         break;
