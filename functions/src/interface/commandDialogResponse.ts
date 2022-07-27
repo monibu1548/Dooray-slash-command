@@ -8,5 +8,5 @@ export interface CommandDialogResponse {
   responseUrl: string,
   cmdToken: string,
   callbackId: string,
-  submission: Map<string, string>
+  submission: any
 }

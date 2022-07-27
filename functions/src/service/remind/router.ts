@@ -126,16 +126,23 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
   if (isDialogResponse(req.body)) {
 
     const dialogResponse = req.body as CommandDialogResponse
-    const value = dialogResponse.submission
+    const value = dialogResponse.submission.manual as string
 
     // value => date 로 변경하면서 유효성 검사
     stagingLog('[DEBUG] value => ' + JSON.stringify(value))
-    stagingLog('[DEBUG] value type => ' + (value.constructor.name))
+
+    const [dateComponents, timeComponents] = value.split(' ');
+    const [month, day, year] = dateComponents.split('/');
+    const [hours, minutes] = timeComponents.split(':');
+
+    const date = new Date(+year, +month - 1, +day, +hours, +minutes, 0);
+
+    stagingLog('[DEBUG] date => ' + date.toLocaleString())
 
     // 리마인더 등록
 
     const message = {
-      text: 'ㄷ',
+      text: date.toLocaleString(),
       responseType: ResponseType.Ephemeral,
       replaceOriginal: true,
       deleteOriginal: true,
