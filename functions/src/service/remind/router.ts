@@ -132,7 +132,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
     stagingLog('[DEBUG] value => ' + JSON.stringify(value))
 
     const [dateComponents, timeComponents] = value.split(' ');
-    const [month, day, year] = dateComponents.split('/');
+    const [year, month, day] = dateComponents.split('/');
     const [hours, minutes] = timeComponents.split(':');
 
     const date = new Date(+year, +month - 1, +day, +hours, +minutes, 0);
