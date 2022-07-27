@@ -9,7 +9,7 @@ import { CommandDialogResponse } from "../../interface/commandDialogResponse";
 
 
 // 수동 1회성 Task 등록
-export const registerOnceManualTask = async (dialogResponse: CommandDialogResponse, timestamp: number) => {
+export const registerOnceManualTask = async (dialogResponse: CommandDialogResponse, message: string, timestamp: number) => {
   const task = new RemindTask(
     '',
     '',
@@ -20,7 +20,7 @@ export const registerOnceManualTask = async (dialogResponse: CommandDialogRespon
     dialogResponse.cmdToken,
     dialogResponse.channel.id,
     dialogResponse.channel.name,
-    ''
+    message
   )
 
   const taskID = await firebaseFirestore
@@ -617,6 +617,18 @@ export const showManualInputDialog = async (request: CommandInteraction) => {
       title: request.text,
       submitLabel: '생성',
       elements: [
+        {
+          type: 'text',
+          subtype: 'string',
+          label: '메시지 내용을 작성해주세요',
+          name: 'message',
+          value: request.text,
+          placeholder: '메시지 내용을 작성해주세요',
+          minLength: 1,
+          maxLength: 999,
+          hint: '메시지 내용을 작성해주세요',
+          optional: false
+        },
         {
           type: 'text',
           subtype: 'string',

@@ -126,6 +126,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
 
     const dialogResponse = req.body as CommandDialogResponse
     const value = dialogResponse.submission.manual as string
+    const messageText = dialogResponse.submission.message as string
 
     // value => date 로 변경하면서 유효성 검사
     stagingLog('[DEBUG] value => ' + JSON.stringify(value))
@@ -136,7 +137,7 @@ router.post(EndPoint.Interaction, async (req: express.Request, res: express.Resp
 
     const date = new Date(+year, +month - 1, +day, +hours, +minutes, 0);
 
-    await registerOnceManualTask(dialogResponse, date.getTime())
+    await registerOnceManualTask(dialogResponse, messageText, date.getTime() - (9 * 60 * 60 * 1000))
 
     await messageToChannel("등록했습니다", dialogResponse.tenant.domain, dialogResponse.cmdToken, dialogResponse.channel.id, ResponseType.Ephemeral)
 
