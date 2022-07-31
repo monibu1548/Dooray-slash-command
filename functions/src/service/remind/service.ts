@@ -161,6 +161,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
   // 1.요일 비교
 
   stagingLog('[nextScheduleTimestamp] today: ' + todayWeek)
+  stagingLog('[nextScheduleTimestamp] schedule.weeks: ' + schedule.weeks)
   if (schedule.weeks.indexOf(todayWeek) >= 0) {
     stagingLog('[nextScheduleTimestamp] 오늘이 대상일에 포함')
     // 오늘이 대상일에 포함된 경우
