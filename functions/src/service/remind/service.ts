@@ -155,6 +155,9 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
   var week = new Array('일', '월', '화', '수', '목', '금', '토');
 
   var todayWeek = week[current.getDay()]
+  if (current.getHours() < 9) {
+    todayWeek += 1
+  }
   // 1.요일 비교
 
   stagingLog('[nextScheduleTimestamp] today: ' + todayWeek)
