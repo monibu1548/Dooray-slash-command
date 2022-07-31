@@ -163,7 +163,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
   stagingLog('[nextScheduleTimestamp] today: ' + todayWeek)
   stagingLog('[nextScheduleTimestamp] schedule.weeks: ' + schedule.weeks)
   stagingLog('[nextScheduleTimestamp] getHours: ' + current.getHours())
-  stagingLog('[nextScheduleTimestamp] getHours + 0: ' + current.getHours() + 9)
+  stagingLog('[nextScheduleTimestamp] getHours + 9: ' + (current.getHours() + 9))
   if (schedule.weeks.indexOf(todayWeek) >= 0) {
     stagingLog('[nextScheduleTimestamp] 오늘이 대상일에 포함')
     // 오늘이 대상일에 포함된 경우
@@ -180,8 +180,8 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     stagingLog('[nextScheduleTimestamp] scheduleHour:' + scheduleHour)
     stagingLog('[nextScheduleTimestamp] scheduleMin:' + scheduleMin)
 
-    if (scheduleHour === current.getHours() + 9) {
-      stagingLog('[nextScheduleTimestamp] scheduleHour === current.getHours() + 9')
+    if (scheduleHour === current.getHours()) {
+      stagingLog('[nextScheduleTimestamp] scheduleHour === current.getHours()')
 
       if (scheduleMin > current.getMinutes() + 1) {
         stagingLog('[nextScheduleTimestamp] scheduleMin > current.getMinutes() + 1')
@@ -235,16 +235,16 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
         return targetDate.getTime() - (9 * 60 * 60 * 1000)
       }
 
-    } else if (scheduleHour > current.getHours() + 9) {
-      stagingLog('[nextScheduleTimestamp] scheduleHour > current.getHours() + 9')
+    } else if (scheduleHour > current.getHours()) {
+      stagingLog('[nextScheduleTimestamp] scheduleHour > current.getHours()')
       // 오늘, scheduleHour 시, schleduleMin 으로 timestamp 생성
 
       var targetDate = new Date()
       targetDate.setHours(scheduleHour)
       targetDate.setMinutes(scheduleMin, 0, 0)
       return targetDate.getTime() - (9 * 60 * 60 * 1000)
-    } else if (scheduleHour < current.getHours() + 9) {
-      stagingLog('[nextScheduleTimestamp] scheduleHour < current.getHours() + 9')
+    } else if (scheduleHour < current.getHours()) {
+      stagingLog('[nextScheduleTimestamp] scheduleHour < current.getHours()')
       // 시간이 지난 경우와 동일하게 처리.
     }
 
