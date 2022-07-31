@@ -156,7 +156,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
   var todayWeek = week[current.getDay()]
   if (current.getHours() < 9) {
-    todayWeek += 1
+    todayWeek = week[current.getDay() + 1]
   }
   // 1.요일 비교
 
