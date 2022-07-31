@@ -162,6 +162,8 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
 
   stagingLog('[nextScheduleTimestamp] today: ' + todayWeek)
   stagingLog('[nextScheduleTimestamp] schedule.weeks: ' + schedule.weeks)
+  stagingLog('[nextScheduleTimestamp] getHours: ' + current.getHours())
+  stagingLog('[nextScheduleTimestamp] getHours + 0: ' + current.getHours() + 9)
   if (schedule.weeks.indexOf(todayWeek) >= 0) {
     stagingLog('[nextScheduleTimestamp] 오늘이 대상일에 포함')
     // 오늘이 대상일에 포함된 경우
