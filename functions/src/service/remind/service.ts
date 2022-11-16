@@ -628,6 +628,13 @@ export const removeTask = async (taskID: string) => {
 }
 
 export const showManualInputDialog = async (request: CommandInteraction) => {
+
+  const commandRequestURL = new URL(request.commandRequestUrl)
+  console.log(commandRequestURL);
+  console.log(commandRequestURL.host);
+  console.log(commandRequestURL.hostname);
+  console.log(request.tenant.domain);
+
   return await axios.post(`https://${request.tenant.domain}/messenger/api/channels/${request.channel.id}/dialogs`, {
     token: request.cmdToken,
     triggerId: request.triggerId,
