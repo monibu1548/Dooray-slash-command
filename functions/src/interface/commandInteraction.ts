@@ -29,7 +29,7 @@ export interface CommandInteraction {
   cmdToken: string,
   triggerId: string,
   commandRequestUrl: string,
-  commandResponseUrl: string,
+  responseUrl: string,
   channelLogId: string,
   originalMessage: CommandResponse
 }

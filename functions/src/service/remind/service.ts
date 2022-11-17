@@ -628,7 +628,9 @@ export const removeTask = async (taskID: string) => {
 }
 
 export const showManualInputDialog = async (request: CommandInteraction) => {
-  const commandResponseUrl = new URL(request.commandResponseUrl)
+  stagingLog('[request] ' + request)
+
+  const commandResponseUrl = new URL(request.responseUrl)
 
   stagingLog('[URL] ' + commandResponseUrl)
   stagingLog('[URL host] ' + commandResponseUrl.host)
