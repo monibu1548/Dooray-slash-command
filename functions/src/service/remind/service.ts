@@ -636,7 +636,7 @@ export const showManualInputDialog = async (request: CommandInteraction) => {
   stagingLog('[URL host] ' + commandResponseUrl.host)
   stagingLog('[URL hostname] ' + commandResponseUrl.hostname)
 
-  return await axios.post(`https://${request.tenant.domain}/messenger/api/channels/${request.channel.id}/dialogs`, {
+  return await axios.post(`https://${commandResponseUrl.host}/messenger/api/channels/${request.channel.id}/dialogs`, {
     token: request.cmdToken,
     triggerId: request.triggerId,
     callbackId: request.callbackId,
