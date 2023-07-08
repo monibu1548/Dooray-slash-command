@@ -11,7 +11,7 @@
     "kill-port": "npx kill-port 8080 && npx kill-port 4000 && npx kill-port 9000 && npx kill-port 9099 && npx kill-port 8085 && npx kill-port 4400"
   },
   "engines": {
-    "node": "12"
+    "node": "16"
   },
   "main": "lib/index.js",
   "dependencies": {
@@ -29,7 +29,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.22.0",
     "firebase-functions-test": "^0.2.0",
-    "typescript": "^3.8.0"
+    "typescript": "^5.1.6"
   },
   "private": true
 }

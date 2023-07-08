@@ -316,9 +316,9 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
   } else {
     stagingLog('[nextScheduleTimestamp] 오늘이 미포함인 경우')
     // 가장 빠른 대상 요일이 몇일 뒤인지. 
-    var weeks = schedule.weeks
+    var weeks = JSON.parse(JSON.stringify(schedule.weeks)) as string[]
 
-    // weeks.push(todayWeek)
+    weeks.push(todayWeek)
     const sorted = sortedWeek(weeks)
     const index = sorted.indexOf(todayWeek)
 
