@@ -318,7 +318,7 @@ export const nextScheduleTimestamp = (schedule: RemindSchedule) => {
     // 가장 빠른 대상 요일이 몇일 뒤인지. 
     var weeks = schedule.weeks
 
-    weeks.push(todayWeek)
+    // weeks.push(todayWeek)
     const sorted = sortedWeek(weeks)
     const index = sorted.indexOf(todayWeek)
 
